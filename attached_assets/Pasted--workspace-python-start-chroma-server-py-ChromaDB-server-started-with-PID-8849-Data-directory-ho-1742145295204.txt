@@ -1,0 +1,43 @@
+~/workspace$ python start-chroma-server.py
+ChromaDB server started with PID 8849
+Data directory: /home/runner/workspace/chroma-db
+Access the server at http://localhost:8000
+
+
+                (((((((((    (((((####
+             ((((((((((((((((((((((#########
+           ((((((((((((((((((((((((###########
+         ((((((((((((((((((((((((((############
+        (((((((((((((((((((((((((((#############
+        (((((((((((((((((((((((((((#############
+         (((((((((((((((((((((((((##############
+         ((((((((((((((((((((((((##############
+           (((((((((((((((((((((#############
+             ((((((((((((((((##############
+                (((((((((    #########
+
+    
+
+Running Chroma
+
+Saving data to: /home/runner/workspace/chroma-db
+Connect to chroma at: http://0.0.0.0:8000
+Getting started guide: https://docs.trychroma.com/getting-started
+
+
+WARNING:  [16-03-2025 17:08:37] chroma_server_nofile cannot be set to a value greater than the current hard limit of 20971. Keeping soft limit at 20971
+INFO:     [16-03-2025 17:08:37] Anonymized telemetry enabled. See                     https://docs.trychroma.com/telemetry for more information.
+DEBUG:    [16-03-2025 17:08:37] Starting component System
+DEBUG:    [16-03-2025 17:08:37] Starting component OpenTelemetryClient
+DEBUG:    [16-03-2025 17:08:37] Starting component SimpleAssignmentPolicy
+DEBUG:    [16-03-2025 17:08:37] Starting component SqliteDB
+DEBUG:    [16-03-2025 17:08:37] Starting component Posthog
+DEBUG:    [16-03-2025 17:08:37] Starting component LocalSegmentManager
+DEBUG:    [16-03-2025 17:08:37] Starting component SegmentAPI
+INFO:     [16-03-2025 17:08:37] Started server process [8849]
+INFO:     [16-03-2025 17:08:37] Waiting for application startup.
+INFO:     [16-03-2025 17:08:37] Application startup complete.
+INFO:     [16-03-2025 17:08:37] Uvicorn running on http://0.0.0.0:8000 (Press CTRL+C to quit)
+INFO:     [16-03-2025 17:11:35] 127.0.0.1:35234 - "GET /api/v2/heartbeat HTTP/1.1" 404
+INFO:     [16-03-2025 17:14:08] 127.0.0.1:43522 - "GET /api/v2/heartbeat HTTP/1.1" 404
+INFO:     [16-03-2025 17:14:17] 172.31.128.37:50532 - "GET / HTTP/1.1" 404
