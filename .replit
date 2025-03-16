@@ -21,7 +21,7 @@ mode = "sequential"
 
 [[workflows.workflow.tasks]]
 task = "shell.exec"
-args = "npx chromadb start --path=./chroma-db"
+args = "npx chroma run --path=./chroma-db"
 
 [[workflows.workflow]]
 name = "Build Vector DB"
@@ -39,7 +39,24 @@ mode = "parallel"
 
 [[workflows.workflow.tasks]]
 task = "shell.exec"
-args = "npx chromadb start --path=./chroma-db"
+args = "echo \"Starting development environment...\""
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "echo \"1. Use the 'Start ChromaDB' workflow in one terminal\""
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "echo \"2. Use the 'Build Vector DB' workflow to create your vector database\""
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "echo \"3. Use the 'NextJS Dev' workflow to start your Next.js application\""
+
+[[workflows.workflow]]
+name = "NextJS Dev"
+author = 40476594
+mode = "sequential"
 
 [[workflows.workflow.tasks]]
 task = "shell.exec"

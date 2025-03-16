@@ -1,6 +1,6 @@
 
 import { OpenAIEmbeddings } from "@langchain/openai";
-import { Chroma } from "@langchain/community/vectorstores/chroma";
+import { Chroma } from "langchain/vectorstores/chroma";
 import * as fs from 'fs';
 import * as path from 'path';
 import { Document } from "langchain/document";
