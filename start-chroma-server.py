@@ -1,25 +1,24 @@
 
 import os
+import sys
 import chromadb
+from chromadb.config import Settings
 
 # Create data directory
 chroma_dir = os.path.join(os.getcwd(), 'chroma-db')
 os.makedirs(chroma_dir, exist_ok=True)
 print(f"ChromaDB directory: {chroma_dir}")
 
-# Start the server with the correct API
+# Import the server module and start it
 print("Starting ChromaDB server...")
-server = chromadb.PersistentClient(
-    path=chroma_dir,
-)
+from chromadb.server import app
+import uvicorn
 
-# Create a simple in-memory instance to confirm it's working
-print("Creating a test collection...")
-try:
-    collection = server.get_or_create_collection("test_collection")
-    print(f"Successfully created collection: {collection.name}")
-    print("ChromaDB is working correctly!")
-except Exception as e:
-    print(f"Error creating collection: {e}")
-
-print("ChromaDB server is ready. Keep this terminal open and run 'node start-chroma.js' in another terminal to test the connection.")
+# This will keep running and not return to shell prompt
+if __name__ == "__main__":
+    uvicorn.run(
+        app,
+        host="0.0.0.0",
+        port=8000,
+        log_level="info"
+    )
