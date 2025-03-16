@@ -17,7 +17,8 @@ async function testChromaDB() {
   // Define the embedding function with OpenAI using text-embedding-3-small
   const embedder = new OpenAIEmbeddingFunction({
     openai_api_key: process.env.OPENAI_API_KEY,
-    model: "text-embedding-3-small"
+    model: "text-embedding-3-small",
+    dimensions: undefined // Explicitly set to undefined to avoid dimension specification
   });
 
   try {
@@ -37,7 +38,8 @@ async function testChromaDB() {
     console.log("\nRunning test query on knowledge_base collection...");
     const queryResults = await collection.query({
       queryTexts: ["construction", "lake building"],
-      nResults: 5
+      nResults: 5,
+      include: ["documents", "metadatas", "distances"]
     });
     
     console.log("\n--- Query Results ---");
