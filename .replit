@@ -21,7 +21,7 @@ mode = "sequential"
 
 [[workflows.workflow.tasks]]
 task = "shell.exec"
-args = "npx chroma run --path=./chroma-db"
+args = "node node_modules/chromadb/dist/server/index.js"
 
 [[workflows.workflow]]
 name = "Build Vector DB"
@@ -30,7 +30,7 @@ mode = "sequential"
 
 [[workflows.workflow.tasks]]
 task = "shell.exec"
-args = "tsx src/scripts/createVectorStore.ts"
+args = "npm run create-vector-store"
 
 [[workflows.workflow]]
 name = "Run App"
