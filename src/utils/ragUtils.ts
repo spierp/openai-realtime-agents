@@ -60,7 +60,7 @@ export async function createVectorStore(documents: Document[], directory: string
   
   const embeddings = new OpenAIEmbeddings({
     openai_api_key: process.env.OPENAI_API_KEY,
-    model: "text-embedding-3-small"
+    modelName: "text-embedding-3-small"
   });
 
   
@@ -81,7 +81,8 @@ export async function createVectorStore(documents: Document[], directory: string
 // Load the vector store
 export async function loadVectorStore(directory: string) {
   const embeddings = new OpenAIEmbeddings({
-    modelName: "text-embedding-3-small"
+    modelName: "text-embedding-3-small",
+    openai_api_key: process.env.OPENAI_API_KEY
   });
   
   // Load the existing ChromaDB collection

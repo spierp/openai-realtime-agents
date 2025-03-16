@@ -14,9 +14,17 @@ async function testChromaDB() {
     const collections = await client.listCollections();
     console.log("Connected successfully! Available collections:", collections);
     
-    // Get the knowledge_base collection WITHOUT specifying the embedding function
+    // Create an embedding function for querying
+    const { OpenAIEmbeddingFunction } = require("chromadb");
+    const embedder = new OpenAIEmbeddingFunction({
+      openai_api_key: process.env.OPENAI_API_KEY,
+      model_name: "text-embedding-3-small"
+    });
+
+    // Get the knowledge_base collection with the embedding function
     const collection = await client.getCollection({
-      name: "knowledge_base"
+      name: "knowledge_base",
+      embeddingFunction: embedder
     });
     console.log("Retrieved 'knowledge_base' collection");
     
