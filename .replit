@@ -16,7 +16,7 @@ localPort = 8000
 externalPort = 8000
 
 [workflows]
-runButton = "Run App"
+runButton = "Run Full App"
 
 [[workflows.workflow]]
 name = "Start ChromaDB"
@@ -61,6 +61,19 @@ args = "echo \"3. Use the 'NextJS Dev' workflow to start your Next.js applicatio
 name = "NextJS Dev"
 author = 40476594
 mode = "sequential"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "npm run dev"
+
+[[workflows.workflow]]
+name = "Run Full App"
+author = 40476594
+mode = "parallel"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "python start-chroma-server.py"
 
 [[workflows.workflow.tasks]]
 task = "shell.exec"
