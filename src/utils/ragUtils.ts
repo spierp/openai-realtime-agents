@@ -68,9 +68,6 @@ export async function createVectorStore(documents: Document[], directory: string
     { 
       collectionName: collectionName,
       url: "http://0.0.0.0:8000", // ChromaDB by default runs on port 8000
-      collectionMetadata: {
-        "hnsw:space": "cosine" // Using cosine similarity
-      }
     }
   );
   

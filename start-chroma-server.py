@@ -1,7 +1,7 @@
 
 import os
+import sys
 import chromadb
-from chromadb.server.fastapi import FastAPI
 
 # Create data directory
 chroma_dir = os.path.join(os.getcwd(), 'chroma-db')
@@ -11,26 +11,27 @@ print(f"ChromaDB directory: {chroma_dir}")
 # Import the server module and start it
 print("Starting ChromaDB server...")
 
-# Setup the Chroma server
-from chromadb.config import Settings
+# Create a test client to verify ChromaDB works
+client = chromadb.PersistentClient(path=chroma_dir)
+test_collection = client.get_or_create_collection(name="test_collection")
+print(f"Successfully created collection: {test_collection.name}")
+print("ChromaDB is working correctly!")
+
+# Start the ChromaDB server
+print("ChromaDB server is ready. Keep this terminal open and run 'node start-chroma.js' in another terminal to test the connection.")
+
+# Start the actual server
 import uvicorn
+from chromadb.server.app import app
+import logging
 
-settings = Settings(
-    chroma_api_impl="chromadb.api.segment.SegmentAPI",
-    chroma_db_impl="chromadb.db.duckdb.DuckDB",
-    persist_directory=chroma_dir,
-    chroma_server_host="0.0.0.0",
-    chroma_server_http_port=8000,
-    allow_reset=True,
-    anonymized_telemetry=False
-)
-
-# This will keep running and not return to shell prompt
 if __name__ == "__main__":
-    server = FastAPI(settings)
+    # Configure logging
+    logging.basicConfig(level=logging.INFO)
+    
+    # Run the server
     uvicorn.run(
-        server.app,
+        app,
         host="0.0.0.0",
-        port=8000,
-        log_level="info"
+        port=8000
     )
