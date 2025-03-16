@@ -9,6 +9,9 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@langchain/openai": "^0.4.4",
+    "faiss-node": "^0.5.1",
+    "langchain": "^0.3.19",
     "next": "15.1.4",
     "openai": "^4.77.3",
     "react": "^19.0.0",
