@@ -1,4 +1,4 @@
-modules = ["nodejs-20", "web"]
+modules = ["nodejs-20", "python-3.11", "web"]
 run = "npm run dev"
 
 [nix]
@@ -21,7 +21,7 @@ mode = "sequential"
 
 [[workflows.workflow.tasks]]
 task = "shell.exec"
-args = "node start-chroma-server.js"
+args = "python start-chroma-server.py"
 
 [[workflows.workflow]]
 name = "Build Vector DB"
