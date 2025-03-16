@@ -1,41 +1,44 @@
 
 import { Document } from "langchain/document";
 import { RecursiveCharacterTextSplitter } from "langchain/text_splitter";
-import { OpenAIEmbeddings } from "langchain/embeddings/openai";
+import { OpenAIEmbeddings } from "@langchain/openai";
 import { Chroma } from "@langchain/community/vectorstores/chroma";
 import * as fs from 'fs';
 import * as path from 'path';
 
-// Function to recursively read markdown files from a directory
+// Function to read all markdown files from a directory recursively
 export async function readMarkdownFiles(dirPath: string): Promise<Document[]> {
   const documents: Document[] = [];
   
-  const readDir = async (currentPath: string) => {
+  async function processDirectory(currentPath: string, relativePath: string = '') {
     const entries = fs.readdirSync(currentPath, { withFileTypes: true });
     
     for (const entry of entries) {
       const fullPath = path.join(currentPath, entry.name);
+      const entryRelativePath = path.join(relativePath, entry.name);
       
       if (entry.isDirectory()) {
-        await readDir(fullPath);
+        await processDirectory(fullPath, entryRelativePath);
       } else if (entry.isFile() && entry.name.endsWith('.md')) {
         const content = fs.readFileSync(fullPath, 'utf-8');
-        const relativePath = path.relative(dirPath, fullPath);
+        // Extract category from path (e.g., "Health & Wellness/Mental")
+        const category = path.dirname(entryRelativePath);
         
         documents.push(
           new Document({
             pageContent: content,
             metadata: {
-              source: relativePath,
-              fileName: entry.name
+              source: fullPath,
+              fileName: entry.name,
+              category: category
             }
           })
         );
       }
     }
-  };
+  }
   
-  await readDir(dirPath);
+  await processDirectory(dirPath);
   return documents;
 }
 
@@ -64,7 +67,7 @@ export async function createVectorStore(documents: Document[], directory: string
     embeddings, 
     { 
       collectionName: collectionName,
-      url: "http://localhost:8000", // ChromaDB by default runs on port 8000
+      url: "http://0.0.0.0:8000", // ChromaDB by default runs on port 8000
       collectionMetadata: {
         "hnsw:space": "cosine" // Using cosine similarity
       }
@@ -83,7 +86,7 @@ export async function loadVectorStore(directory: string) {
     embeddings,
     { 
       collectionName: "knowledge_base",
-      url: "http://localhost:8000" // ChromaDB by default runs on port 8000
+      url: "http://0.0.0.0:8000" // ChromaDB by default runs on port 8000
     }
   );
 }

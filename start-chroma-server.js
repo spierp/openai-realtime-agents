@@ -12,16 +12,15 @@ if (!fs.existsSync(chromaDir)) {
 
 console.log(`Starting ChromaDB server with data directory: ${chromaDir}`);
 
-// Run the ChromaDB server using the correct command
-// ChromaDB is often served through the Python package
-const server = spawn('npx', ['--yes', 'chromadb'], {
+// Run the ChromaDB server using the correct approach for the JS SDK
+const server = spawn('npx', ['chromadb'], {
   stdio: 'inherit',
   shell: true,
   env: {
     ...process.env,
+    PERSIST_DIRECTORY: chromaDir,
     CHROMA_SERVER_HTTP_PORT: '8000',
     CHROMA_SERVER_HOST: '0.0.0.0',
-    PERSIST_DIRECTORY: chromaDir,
     CHROMA_SERVER_CORS_ALLOW_ORIGINS: '*'
   }
 });
