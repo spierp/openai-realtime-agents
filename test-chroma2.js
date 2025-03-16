@@ -1,12 +1,14 @@
+
 const { ChromaClient, OpenAIEmbeddingFunction } = require("chromadb");
 
 async function testChromaDB() {
   // Initialize the Chroma client
-  const client = new ChromaClient({ path: "http://localhost:8000" });
+  const client = new ChromaClient({ path: "http://0.0.0.0:8000" });
 
-  // Define the embedding function
+  // Define the embedding function with correct model name parameter
   const embedder = new OpenAIEmbeddingFunction({
-    openai_api_key: "your_openai_api_key",
+    openai_api_key: process.env.OPENAI_API_KEY,
+    model_name: "text-embedding-3-small"
   });
 
   try {
@@ -24,6 +26,7 @@ async function testChromaDB() {
     const results = await collection.query({
       queryTexts,
       nResults,
+      include: ["documents", "metadatas", "distances"]
     });
 
     console.log("Query Results:", results);
