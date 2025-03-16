@@ -1,0 +1,162 @@
+~/workspace$ python start-chroma-server.py run
+ChromaDB directory: /home/runner/workspace/chroma-db
+Starting ChromaDB server...
+Successfully created collection: test_collection
+ChromaDB is working correctly!
+ChromaDB server is ready. Keep this terminal open and run 'node start-chroma.js' in another terminal to test the connection.
+Starting ChromaDB server on port 8000...
+
+
+                (((((((((    (((((####
+             ((((((((((((((((((((((#########
+           ((((((((((((((((((((((((###########
+         ((((((((((((((((((((((((((############
+        (((((((((((((((((((((((((((#############
+        (((((((((((((((((((((((((((#############
+         (((((((((((((((((((((((((##############
+         ((((((((((((((((((((((((##############
+           (((((((((((((((((((((#############
+             ((((((((((((((((##############
+                (((((((((    #########
+
+    
+
+Running Chroma
+
+Saving data to: ./chroma_data
+Connect to chroma at: http://localhost:8000
+Getting started guide: https://docs.trychroma.com/getting-started
+
+
+╭─────────────── Traceback (most recent call last) ────────────────╮
+│ /home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/ │
+│ chromadb/cli/cli.py:76 in run                                    │
+│                                                                  │
+│   73 │   if test:                                                │
+│   74 │   │   return                                              │
+│   75 │                                                           │
+│ ❱ 76 │   uvicorn.run(**config)                                   │
+│   77                                                             │
+│   78                                                             │
+│   79 @app.command()  # type: ignore                              │
+│                                                                  │
+│ ╭─────────────────────────── locals ───────────────────────────╮ │
+│ │ chromadb_path = '/home/runner/workspace/.pythonlibs/lib/pyt… │ │
+│ │        config = {                                            │ │
+│ │                 │   'app': 'chromadb.app:app',               │ │
+│ │                 │   'host': 'localhost',                     │ │
+│ │                 │   'port': 8000,                            │ │
+│ │                 │   'workers': 1,                            │ │
+│ │                 │   'log_config':                            │ │
+│ │                 '/home/runner/workspace/.pythonlibs/lib/pyt… │ │
+│ │                 │   'timeout_keep_alive': 30                 │ │
+│ │                 }                                            │ │
+│ │          host = 'localhost'                                  │ │
+│ │          path = './chroma_data'                              │ │
+│ │          port = 8000                                         │ │
+│ │          test = False                                        │ │
+│ ╰──────────────────────────────────────────────────────────────╯ │
+│                                                                  │
+│ /home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/ │
+│ uvicorn/main.py:579 in run                                       │
+│                                                                  │
+│   576 │   │   │   sock = config.bind_socket()                    │
+│   577 │   │   │   Multiprocess(config, target=server.run, socket │
+│   578 │   │   else:                                              │
+│ ❱ 579 │   │   │   server.run()                                   │
+│   580 │   except KeyboardInterrupt:                              │
+│   581 │   │   pass  # pragma: full coverage                      │
+│   582 │   finally:                                               │
+│                                                                  │
+│ ╭─────────────────────────── locals ───────────────────────────╮ │
+│ │                  access_log = True                           │ │
+│ │                         app = 'chromadb.app:app'             │ │
+│ │                     app_dir = None                           │ │
+│ │                     backlog = 2048                           │ │
+│ │                      config = <uvicorn.config.Config object  │ │
+│ │                               at 0x7fc56e14a010>             │ │
+│ │                 date_header = True                           │ │
+│ │                    env_file = None                           │ │
+│ │                     factory = False                          │ │
+│ │                          fd = None                           │ │
+│ │         forwarded_allow_ips = None                           │ │
+│ │ h11_max_incomplete_event_size None                           │ │
+│ │                             =                                │ │
+│ │                     headers = None                           │ │
+│ │                        host = 'localhost'                    │ │
+│ │                        http = 'auto'                         │ │
+│ │                   interface = 'auto'                         │ │
+│ │                    lifespan = 'auto'                         │ │
+│ │           limit_concurrency = None                           │ │
+│ │          limit_max_requests = None                           │ │
+│ │                  log_config = '/home/runner/workspace/.pyth… │ │
+│ │                   log_level = None                           │ │
+│ │                        loop = 'auto'                         │ │
+│ │                        port = 8000                           │ │
+│ │               proxy_headers = True                           │ │
+│ │                      reload = False                          │ │
+│ │                reload_delay = 0.25                           │ │
+│ │                 reload_dirs = None                           │ │
+│ │             reload_excludes = None                           │ │
+│ │             reload_includes = None                           │ │
+│ │                   root_path = ''                             │ │
+│ │                      server = <uvicorn.server.Server object  │ │
+│ │                               at 0x7fc56e0a8450>             │ │
+│ │               server_header = True                           │ │
+│ │                ssl_ca_certs = None                           │ │
+│ │               ssl_cert_reqs = <VerifyMode.CERT_NONE: 0>      │ │
+│ │                ssl_certfile = None                           │ │
+│ │                 ssl_ciphers = 'TLSv1'                        │ │
+│ │                 ssl_keyfile = None                           │ │
+│ │        ssl_keyfile_password = None                           │ │
+│ │                 ssl_version = <_SSLMethod.PROTOCOL_TLS_SERV… │ │
+│ │                               17>                            │ │
+│ │   timeout_graceful_shutdown = None                           │ │
+│ │          timeout_keep_alive = 30                             │ │
+│ │                         uds = None                           │ │
+│ │                  use_colors = None                           │ │
+│ │                     workers = 1                              │ │
+│ │                          ws = 'auto'                         │ │
+│ │                ws_max_queue = 32                             │ │
+│ │                 ws_max_size = 16777216                       │ │
+│ │      ws_per_message_deflate = True                           │ │
+│ │            ws_ping_interval = 20.0                           │ │
+│ │             ws_ping_timeout = 20.0                           │ │
+│ ╰──────────────────────────────────────────────────────────────╯ │
+│                                                                  │
+│ /home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/ │
+│ uvicorn/server.py:66 in run                                      │
+│                                                                  │
+│    63 │                                                          │
+│    64 │   def run(self, sockets: list[socket.socket] | None = No │
+│    65 │   │   self.config.setup_event_loop()                     │
+│ ❱  66 │   │   return asyncio.run(self.serve(sockets=sockets))    │
+│    67 │                                                          │
+│    68 │   async def serve(self, sockets: list[socket.socket] | N │
+│    69 │   │   with self.capture_signals():                       │
+│                                                                  │
+│ ╭────────────────────────── locals ──────────────────────────╮   │
+│ │    self = <uvicorn.server.Server object at 0x7fc56e0a8450> │   │
+│ │ sockets = None                                             │   │
+│ ╰────────────────────────────────────────────────────────────╯   │
+│                                                                  │
+│ /nix/store/clx0mcir7qw8zk36zbr4jra789g3knf6-python3-3.11.10/lib/ │
+│ python3.11/asyncio/runners.py:186 in run                         │
+│                                                                  │
+│   183 │   """                                                    │
+│   184 │   if events._get_running_loop() is not None:             │
+│   185 │   │   # fail fast with short traceback                   │
+│ ❱ 186 │   │   raise RuntimeError(                                │
+│   187 │   │   │   "asyncio.run() cannot be called from a running │
+│   188 │                                                          │
+│   189 │   with Runner(debug=debug) as runner:                    │
+│                                                                  │
+│ ╭───────────────────────── locals ──────────────────────────╮    │
+│ │ debug = None                                              │    │
+│ │  main = <coroutine object Server.serve at 0x7fc56e7d72e0> │    │
+│ ╰───────────────────────────────────────────────────────────╯    │
+╰──────────────────────────────────────────────────────────────────╯
+RuntimeError: asyncio.run() cannot be called from a running event 
+loop
+sys:1: RuntimeWarning: coroutine 'Server.serve' was never awaited
+~/workspace$ 
