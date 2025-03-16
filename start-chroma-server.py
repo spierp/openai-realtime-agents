@@ -2,6 +2,7 @@
 import os
 import sys
 import chromadb
+import logging
 
 # Create data directory
 chroma_dir = os.path.join(os.getcwd(), 'chroma-db')
@@ -20,18 +21,26 @@ print("ChromaDB is working correctly!")
 # Start the ChromaDB server
 print("ChromaDB server is ready. Keep this terminal open and run 'node start-chroma.js' in another terminal to test the connection.")
 
-# Start the actual server
+# Start the actual server - using the correct module import for the current version
 import uvicorn
-from chromadb.server.app import app
-import logging
 
 if __name__ == "__main__":
     # Configure logging
     logging.basicConfig(level=logging.INFO)
     
-    # Run the server
+    # Run the server using the ChromaDB binary
+    # Since the server module structure has changed, we'll use the CLI
+    print("Starting ChromaDB server on port 8000...")
+    os.environ["CHROMA_SERVER_HOST"] = "0.0.0.0"
+    os.environ["CHROMA_SERVER_HTTP_PORT"] = "8000"
+    os.environ["PERSIST_DIRECTORY"] = chroma_dir
+    os.environ["CHROMA_SERVER_CORS_ALLOW_ORIGINS"] = "*"
+    
+    # Use the installed ChromaDB server command
+    from chromadb.cli.cli import app as chroma_app
     uvicorn.run(
-        app,
+        chroma_app,
         host="0.0.0.0",
-        port=8000
+        port=8000,
+        log_level="info"
     )
