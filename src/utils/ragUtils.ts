@@ -1,44 +1,41 @@
 
-import { OpenAIEmbeddings } from "@langchain/openai";
-import { Chroma } from "langchain/vectorstores/chroma";
-import * as fs from 'fs';
-import * as path from 'path';
 import { Document } from "langchain/document";
 import { RecursiveCharacterTextSplitter } from "langchain/text_splitter";
+import { OpenAIEmbeddings } from "langchain/embeddings/openai";
+import { Chroma } from "@langchain/community/vectorstores/chroma";
+import * as fs from 'fs';
+import * as path from 'path';
 
-// Function to read all markdown files from a directory recursively
+// Function to recursively read markdown files from a directory
 export async function readMarkdownFiles(dirPath: string): Promise<Document[]> {
   const documents: Document[] = [];
   
-  async function processDirectory(currentPath: string, relativePath: string = '') {
+  const readDir = async (currentPath: string) => {
     const entries = fs.readdirSync(currentPath, { withFileTypes: true });
     
     for (const entry of entries) {
       const fullPath = path.join(currentPath, entry.name);
-      const entryRelativePath = path.join(relativePath, entry.name);
       
       if (entry.isDirectory()) {
-        await processDirectory(fullPath, entryRelativePath);
+        await readDir(fullPath);
       } else if (entry.isFile() && entry.name.endsWith('.md')) {
         const content = fs.readFileSync(fullPath, 'utf-8');
-        // Extract category from path (e.g., "Health & Wellness/Mental")
-        const category = path.dirname(entryRelativePath);
+        const relativePath = path.relative(dirPath, fullPath);
         
         documents.push(
           new Document({
             pageContent: content,
             metadata: {
-              source: fullPath,
-              fileName: entry.name,
-              category: category
+              source: relativePath,
+              fileName: entry.name
             }
           })
         );
       }
     }
-  }
+  };
   
-  await processDirectory(dirPath);
+  await readDir(dirPath);
   return documents;
 }
 
@@ -90,8 +87,6 @@ export async function loadVectorStore(directory: string) {
     }
   );
 }
-
-import { Chroma } from "@langchain/community/vectorstores/chroma";
 
 // Search the vector store for similar documents
 export async function searchVectorStore(vectorStore: Chroma, query: string, filter?: any, k: number = 5) {
