@@ -10,3 +10,37 @@ run = ["sh", "-c", "npm run dev"]
 [[ports]]
 localPort = 3000
 externalPort = 80
+
+[workflows]
+runButton = "Run App"
+
+[[workflows.workflow]]
+name = "Start ChromaDB"
+author = 40476594
+mode = "sequential"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "npx chromadb start --path=./chroma-db"
+
+[[workflows.workflow]]
+name = "Build Vector DB"
+author = 40476594
+mode = "sequential"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "tsx src/scripts/createVectorStore.ts"
+
+[[workflows.workflow]]
+name = "Run App"
+author = 40476594
+mode = "parallel"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "npx chromadb start --path=./chroma-db"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "npm run dev"
