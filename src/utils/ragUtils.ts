@@ -58,7 +58,9 @@ export async function createVectorStore(documents: Document[], directory: string
     fs.mkdirSync(directory, { recursive: true });
   }
   
-  const embeddings = new OpenAIEmbeddings();
+  const embeddings = new OpenAIEmbeddings({
+    modelName: "text-embedding-3-small"
+  });
   
   // Create a ChromaDB collection with a specified name
   const collectionName = "knowledge_base";
@@ -76,7 +78,9 @@ export async function createVectorStore(documents: Document[], directory: string
 
 // Load the vector store
 export async function loadVectorStore(directory: string) {
-  const embeddings = new OpenAIEmbeddings();
+  const embeddings = new OpenAIEmbeddings({
+    modelName: "text-embedding-3-small"
+  });
   
   // Load the existing ChromaDB collection
   return await Chroma.fromExistingCollection(
