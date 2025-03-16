@@ -9,16 +9,19 @@ const client = new ChromaClient({
 });
 
 // Test connection with heartbeat
-client.heartbeat()
-  .then(heartbeat => {
-    console.log(`Connected to ChromaDB server! Heartbeat: ${heartbeat}`);
-    return client.listCollections();
-  })
-  .then(collections => {
-    console.log("Available collections:", collections);
-  })
-  .catch(err => {
-    console.error('Error connecting to ChromaDB server:', err);
-    console.log("Please start the ChromaDB server first with:");
-    console.log("python start-chroma-server.py");
-  });
+console.log("Attempting to connect to ChromaDB server...");
+setTimeout(() => {
+  client.heartbeat()
+    .then(heartbeat => {
+      console.log(`Connected to ChromaDB server! Heartbeat: ${heartbeat}`);
+      return client.listCollections();
+    })
+    .then(collections => {
+      console.log("Available collections:", collections);
+    })
+    .catch(err => {
+      console.error('Error connecting to ChromaDB server:', err);
+      console.log("Please start the ChromaDB server first with:");
+      console.log("python start-chroma-server.py");
+    });
+}, 2000); // Give the server a moment to start
