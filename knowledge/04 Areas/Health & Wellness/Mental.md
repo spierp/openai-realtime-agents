@@ -1,0 +1,5 @@
+- Light in the morning
+    - light meter - app
+    - 1000 lux outside
+    - through a window takes way longer than being outside
+    - try to get outside within an hour for 2 to 10 minutes

@@ -1,0 +1,10 @@
+- Bank Requirements
+	- Insurance requirements
+	- fixed price contract and schedule
+	- Inspection every month to approve the draw
+	- Water done first before closing
+- Wall detail
+	- hydronic piping / heating and cooling
+	- insulation types
+- Distance from the road and earthwork.
+- 

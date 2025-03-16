@@ -1,0 +1,27 @@
+Meeting notes:
+- Safety
+	- Daily log on procore.  No safety issues.  
+- Schedule
+	- Demo work complete.
+	- Plumber out, fix water line.  Positive water stop.  Accomplished today.  
+	- Framing scheduled for tomorrow to start framing.
+	- Plumber will come back and rough everything in and set teh shower pan. 
+	- Inspection tentatively scheduled for friday afternoon.
+	- Corridor, taping of the walls in corridor.  
+	- Striving to hit the schedule.
+- FF&E
+	- Drapery being installed on the 25th, she wanted to push to the 30th.  
+	- HD to advise is 25th works or the 1st for measuring rooms and install drapery.  
+	- FF&E for 31st through the 2nd.  Devon to schedule montague.
+- Existing shut-off valve
+	- HD to forward
+- Corridor ceiling texture.  
+	- South the tower, material that was used at the ceiling different than the popcorn on the north tower.  
+	- Not a typical popcorn, spray on texture that was painted over.  Demolition much more complicated and harder to take-off.  
+	- Sand down the existing texture.  2 passes of the taping finish look of north tower ceilings.
+	- Keep existing texture.  Remove spray on texture painted material.  
+	- 2 days 2 men, 10k per floor.  scraping 
+	- Comparison on the cost what would look like for production.  34 corridors.  Knock down type of texture.  
+- Wallcovering removal.  did not have drywall behind, how much more prep are we talking. major patches.  separate cost study and schedule impact.  
+- Guestroom has been scrapped, nice smooth ceiling.  Not this do this 
+- Bed skirts.  

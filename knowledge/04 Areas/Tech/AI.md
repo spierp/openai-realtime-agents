@@ -1,0 +1,7 @@
+### Essays
+- [[Machines of Loving Grace]]
+	- The article presents a vision of a world profoundly transformed by powerful AI, one that far surpasses the technological and medical achievements humans could have accomplished on their own. It argues that within 5 to 10 years of achieving certain advanced AI capabilities—akin to a “country of geniuses in a datacenter”—we could compress a century of scientific, medical, and economic progress into a few years. This compression would eliminate most diseases, radically extend human lifespans, and cure or prevent most mental illnesses. Along with these health gains, AI-driven improvements in economics, governance, and policymaking could accelerate the end of global poverty, strengthen democracy, and create fairer societies.
+	- However, the article acknowledges that these radical benefits will not be realized automatically. While technology may offer solutions, it must contend with real-world constraints: the speed and complexity of the physical world, the data and material requirements of scientific research, and the complications of human society and institutions. There is no guarantee that powerful AI will support democracy over authoritarianism or equality over disparity. Achieving these ideal outcomes will require concerted effort, democratic participation, wise policy, and a continued focus on managing AI risks to ensure that this technology becomes a tool for broad human flourishing rather than a force of division or destruction.
+
+### Diffusion
+[[Diffusion]]

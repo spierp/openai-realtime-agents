@@ -1,0 +1,13 @@
+#journal 
+- Journal
+    - [[Morning Check-In]]
+        - [[On My Mind This Morning]]
+        - [[One Thing to Accomplish Today]]
+        - [[I am grateful for or excited about]]
+    - [[Evening Check-In]]
+        - [[Daily Score]]
+        - [[One Thing I Achieved Today]]
+        - [[Stories from Today]]
+        - [[Today I learned]]
+        - [[Exercise & Wellness Today]]
+        - [[How could I have made today better?]]

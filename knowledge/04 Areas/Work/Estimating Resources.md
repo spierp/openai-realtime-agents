@@ -1,0 +1,24 @@
+- Recruiting
+	- Cynthia Selinas - kay Bassmen
+	- Linkedin
+	- Andrew in Singapore
+	- 
+- Internal Resources
+	- make it public. PM/APM.  Sr. PMs. Full time permanent change. 
+		- Job postings on linkedin.  Big corporation, internal job postings. Over communicating.  Ideally in Seattle, part of interiors team for long term.  A few people are off limits.  
+		- Blind copy a list.  Relocation survey.  
+	- Reverse engineer come up with list of candidates that might fit 
+		- David Manso
+			- At Pointe Grand now, probably going to LA.  From Mexico
+		- William Solano 
+			- Ask Greg about him
+		- Daniel Richards
+			- recommended by Greg.  Has been doing some interiors work. Works with a PE named Jeri.
+			- having another kid soon, not as likely to move to Seattle.
+		- Christina Tsai
+			- Busy through october but Allison is going to check in with her.  
+		- Jason Lim
+			- Marcus's brother, very smart but likely would not move.  
+		- Dustin Sullivan
+			- Probably a long shot and not available for awhile.
+			- Wants to stick with project management.  

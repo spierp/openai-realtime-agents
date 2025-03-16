@@ -1,0 +1,51 @@
+- Peter Benjamin Spier (8/10/1983)
+	- Wife
+		- [[Keri]] Spier (Layton)
+	- Children
+		- [[Ben]] Spier
+		- [[Nora]] Spier
+	- Siblings
+	    - [[Ann Marie]] Dadwal (Spier) (12/07/1987)
+	- Parents
+	    - [[Dennis]] John Spier (11/28/195x?)
+		    - Grandparents (Father's side)
+		        - [[Peter William Spier]] (xx/xx/xxxx)
+		        - Jean Spier (Comport) (Maiden name?) (xx/xx/xxxx)
+			- Aunts and Uncles (Father's side)
+		        - [[Aunt Liz]] (married Uncle Trip) (xx/xx/xxxx)
+			        - Cousins
+			            - Kate
+			            - Natalie
+		        - [[Aunt Kate]] (married Uncle Scott) (xx/xx/xxxx)
+			        - Cousins
+			            - Andrew
+			            - Elizabeth
+		        - [[Aunt Lucy]] (xx/xx/xxxx)
+			        - Cousins
+				        - Woodrow
+		        - [[Aunt Margaret]] Grau (Comport) (xx/xx/xxxx)
+			        - Cousins
+			            - Lily
+			            - Ava 
+    - [[Donna]] Marie Spier (10/10/195x?)
+	    - Grandparents (Mother's side)
+	        - Angelo Roccazella (xx/xx/xxxx)
+		        - Great grandparents
+			        - 
+	        - Eleanor Marino (xx/xx/xxxx)
+		        - Great grandparents
+			        - Nana
+		- Aunts and Uncles (Mother's side)
+	        - Michael (xx/xx/xxxx)
+		        - Cousins
+		            - Michael
+		            - [[Brenna]]
+	        - Jimmy (xx/xx/xxxx)
+		        - Cousins
+			        - Sammy
+			        - Nick
+			- Louie (xx/xx/xxxx)
+				- Cousins
+		            - Katie
+		            - Lauren
+		            - Casey
