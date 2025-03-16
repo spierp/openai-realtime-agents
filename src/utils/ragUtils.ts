@@ -59,8 +59,10 @@ export async function createVectorStore(documents: Document[], directory: string
   }
   
   const embeddings = new OpenAIEmbeddings({
-    modelName: "text-embedding-3-small"
+    openai_api_key: process.env.OPENAI_API_KEY,
+    model: "text-embedding-3-small"
   });
+
   
   // Create a ChromaDB collection with a specified name
   const collectionName = "knowledge_base";
