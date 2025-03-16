@@ -5,18 +5,16 @@ console.log("Testing connection to ChromaDB server...");
 
 // Create a client that connects to the server
 const client = new ChromaClient({
-  path: "http://0.0.0.0:8000" 
+  path: "http://localhost:8000" 
 });
 
 // Test connection with heartbeat
 console.log("Attempting to connect to ChromaDB server...");
 setTimeout(() => {
-  client.heartbeat()
-    .then(heartbeat => {
-      console.log(`Connected to ChromaDB server! Heartbeat: ${heartbeat}`);
-      return client.listCollections();
-    })
+  // Try listing collections directly instead of using heartbeat
+  client.listCollections()
     .then(collections => {
+      console.log("Connected to ChromaDB server successfully!");
       console.log("Available collections:", collections);
     })
     .catch(err => {
