@@ -1,30 +1,36 @@
 
-// Simple script to start ChromaDB server
-const { spawn } = require('child_process');
+// Simple script to start ChromaDB client
 const path = require('path');
+const fs = require('fs');
 
 // Create directory if it doesn't exist
-const fs = require('fs');
 const chromaDir = path.join(process.cwd(), 'chroma-db');
 if (!fs.existsSync(chromaDir)) {
   fs.mkdirSync(chromaDir, { recursive: true });
+  console.log(`Created ChromaDB directory at ${chromaDir}`);
 }
 
-// Import the ChromaDB server module
 try {
-  // This is how to start the ChromaDB server programmatically
-  const chromadb = require('chromadb');
-  const server = new chromadb.ChromaServer();
+  // Import the ChromaDB client
+  const { ChromaClient } = require('chromadb');
   
-  server.start({
-    host: '0.0.0.0',  // Allow external connections
-    port: 8000,       // Default ChromaDB port
-    path: chromaDir   // Where to store data
-  }).then(() => {
-    console.log('ChromaDB server started on http://0.0.0.0:8000');
-  }).catch(err => {
-    console.error('Failed to start ChromaDB server:', err);
+  // Create a client that connects to the server
+  const client = new ChromaClient({
+    path: "http://localhost:8000"
   });
+  
+  // Test connection with heartbeat
+  client.heartbeat()
+    .then(heartbeat => {
+      console.log(`Connected to ChromaDB server successfully! Heartbeat: ${heartbeat}`);
+      console.log(`Please start the ChromaDB server separately with:`);
+      console.log(`npx chromadb-server --path ${chromaDir}`);
+    })
+    .catch(err => {
+      console.error('Error connecting to ChromaDB server:', err);
+      console.log(`Please start the ChromaDB server with:`);
+      console.log(`npx chromadb-server --path ${chromaDir}`);
+    });
 } catch (err) {
   console.error('Error importing ChromaDB:', err);
 }

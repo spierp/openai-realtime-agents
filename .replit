@@ -21,7 +21,7 @@ mode = "sequential"
 
 [[workflows.workflow.tasks]]
 task = "shell.exec"
-args = "node start-chroma.js"
+args = "node start-chroma-server.js"
 
 [[workflows.workflow]]
 name = "Build Vector DB"

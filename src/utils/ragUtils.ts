@@ -91,6 +91,8 @@ export async function loadVectorStore(directory: string) {
   );
 }
 
+import { Chroma } from "@langchain/community/vectorstores/chroma";
+
 // Search the vector store for similar documents
 export async function searchVectorStore(vectorStore: Chroma, query: string, filter?: any, k: number = 5) {
   // ChromaDB has a different filtering mechanism than FAISS
