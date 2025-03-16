@@ -13,6 +13,17 @@ setTimeout(() => {
     .then((collections) => {
       console.log("Connected to ChromaDB server successfully!");
       console.log("Available collections:", collections);
+      const collection = client.getCollection({ name: "knowledge_base" });
+
+      const queryTexts = ["construction", "lake building"];
+      const nResults = 5; // Number of results to retrieve
+
+      const results = collection.query({
+        queryTexts,
+        nResults,
+      });
+
+      console.log("Query Results:", results);
     })
     .catch((err) => {
       console.error("Error connecting to ChromaDB server:", err);
