@@ -30,7 +30,7 @@ if __name__ == "__main__":
     env["CHROMA_SERVER_HOST"] = "0.0.0.0"  # Use 0.0.0.0 to allow external connections
     env["CHROMA_SERVER_HTTP_PORT"] = "8000"
     env["PERSIST_DIRECTORY"] = chroma_dir
-    env["CHROMA_SERVER_CORS_ALLOW_ORIGINS"] = "*"
+    env["CHROMA_SERVER_CORS_ALLOW_ORIGINS"] = '["*"]'  # JSON format for list of allowed origins
     
     # Run the ChromaDB CLI directly
     subprocess.run([
