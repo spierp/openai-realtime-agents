@@ -15,7 +15,7 @@ async function testCategorySearch() {
   // Define the embedding function with OpenAI
   const embedder = new OpenAIEmbeddingFunction({
     openai_api_key: process.env.OPENAI_API_KEY,
-    openai_model: "text-embedding-3-large"
+    openai_model: "text-embedding-ada-002"
   });
 
   try {
