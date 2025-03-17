@@ -15,11 +15,11 @@ async function testChromaDB() {
   // Create a client that connects to the server
   const client = new ChromaClient({ path: "http://0.0.0.0:8000" });
   
-  // Define the embedding function with OpenAI using text-embedding-3-small
-  // NOTE: Using model_name (not model) to specify the model
+  // Define the embedding function with OpenAI using text-embedding-ada-002
+  // Using the same model as t.js which works
   const embedder = new OpenAIEmbeddingFunction({
     openai_api_key: process.env.OPENAI_API_KEY,
-    model_name: "text-embedding-3-small"
+    model_name: "text-embedding-ada-002"
   });
 
   try {

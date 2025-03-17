@@ -1,7 +1,7 @@
 const { OpenAIEmbeddingFunction } = require("chromadb");
 const embedder = new OpenAIEmbeddingFunction({
   openai_api_key: process.env.OPENAI_API_KEY,
-  model_name: "text-embedding-ada-002-v2",
+  model_name: "text-embedding-ada-002",
 });
 async function testEmbedding() {
   try {
