@@ -23,17 +23,42 @@ export async function readMarkdownFiles(dirPath: string): Promise<Document[]> {
         await processDirectory(fullPath, entryRelativePath);
       } else if (entry.isFile() && entry.name.endsWith(".md")) {
         const content = fs.readFileSync(fullPath, "utf-8");
-        // Extract category from path (e.g., "Health & Wellness/Mental")
+        
+        // Get the full directory path relative to knowledge directory
         const category = path.dirname(entryRelativePath);
+        
+        // Split the path into segments for hierarchical categorization
+        const pathSegments = category.split(path.sep).filter(segment => segment.length > 0);
+        
+        // Create metadata with hierarchical categories
+        const metadata: Record<string, any> = {
+          source: fullPath,
+          fileName: entry.name,
+          category: category, // Keep original for backward compatibility
+        };
+        
+        // Add primary, secondary, tertiary categories based on directory levels
+        if (pathSegments.length > 0) {
+          metadata.primary_category = pathSegments[0];
+          
+          if (pathSegments.length > 1) {
+            metadata.secondary_category = pathSegments[1];
+            
+            if (pathSegments.length > 2) {
+              metadata.tertiary_category = pathSegments[2];
+              
+              // For very deep hierarchies, store the rest as an array
+              if (pathSegments.length > 3) {
+                metadata.additional_categories = pathSegments.slice(3);
+              }
+            }
+          }
+        }
 
         documents.push(
           new Document({
             pageContent: content,
-            metadata: {
-              source: fullPath,
-              fileName: entry.name,
-              category: category,
-            },
+            metadata: metadata,
           }),
         );
       }
