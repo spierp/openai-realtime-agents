@@ -23,35 +23,50 @@ export async function readMarkdownFiles(dirPath: string): Promise<Document[]> {
         await processDirectory(fullPath, entryRelativePath);
       } else if (entry.isFile() && entry.name.endsWith(".md")) {
         const content = fs.readFileSync(fullPath, "utf-8");
-        
+
         // Get the full directory path relative to knowledge directory
         const category = path.dirname(entryRelativePath);
-        
+
         // Split the path into segments for hierarchical categorization
         const pathSegments = category.split(path.sep).filter(segment => segment.length > 0);
         console.log(`File: ${entry.name}, Path: ${entryRelativePath}`);
         console.log(`Path segments: ${JSON.stringify(pathSegments)}`);
-        
+
+        // Extract frontmatter tags if they exist
+        const frontmatterMatch = content.match(/^---\n([\s\S]*?)\n---/);
+        let tags: string[] = [];
+        if (frontmatterMatch) {
+          const frontmatter = frontmatterMatch[1];
+          const tagsMatch = frontmatter.match(/tags:\n(\s+- [^\n]+\n?)+/);
+          if (tagsMatch) {
+            tags = tagsMatch[0]
+              .split('\n')
+              .filter(line => line.trim().startsWith('- '))
+              .map(line => line.replace(/^\s*- /, '').trim());
+          }
+        }
+
         // Create metadata with hierarchical categories
         const metadata: Record<string, any> = {
           source: fullPath,
           fileName: entry.name,
           category: category, // Keep original for backward compatibility
+          tags: tags, // Add tags from frontmatter
         };
-        
+
         // Add primary, secondary, tertiary categories based on directory levels
         if (pathSegments.length > 0) {
           metadata.primary_category = pathSegments[0];
           console.log(`Setting primary_category: ${pathSegments[0]}`);
-          
+
           if (pathSegments.length > 1) {
             metadata.secondary_category = pathSegments[1];
             console.log(`Setting secondary_category: ${pathSegments[1]}`);
-            
+
             if (pathSegments.length > 2) {
               metadata.tertiary_category = pathSegments[2];
               console.log(`Setting tertiary_category: ${pathSegments[2]}`);
-              
+
               // For very deep hierarchies, store the rest as an array
               if (pathSegments.length > 3) {
                 metadata.additional_categories = pathSegments.slice(3);
