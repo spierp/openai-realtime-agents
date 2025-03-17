@@ -31,11 +31,13 @@ async function testCategorySearch() {
     });
     console.log("Retrieved 'knowledge_base' collection");
     
-    // Test query for '03 Projects' primary category
+    // Test query for '03 Projects' primary category using $eq operator
     console.log("\nSearching for documents in primary_category '03 Projects'...");
     const projectResults = await collection.query({
       queryTexts: ["lake water pump"],
-      where: { primary_category: "03 Projects" },
+      where: { 
+        primary_category: { "$eq": "03 Projects" }
+      },
       nResults: 3,
       include: ["metadatas", "documents", "distances"]
     });
@@ -60,11 +62,16 @@ async function testCategorySearch() {
       console.log(`Document: ${projectResults.documents[0][i].substring(0, 100)}...`);
     }
     
-    // Test query for '04 Areas/Work' secondary category
+    // Test query for Work secondary category using $and operator
     console.log("\nSearching for documents with secondary_category 'Work'...");
     const workResults = await collection.query({
       queryTexts: ["construction"],
-      where: { secondary_category: "Work" },
+      where: { 
+        "$and": [
+          { secondary_category: { "$eq": "Work" } },
+          { primary_category: { "$eq": "04 Areas" } }
+        ]
+      },
       nResults: 3,
       include: ["metadatas", "documents", "distances"]
     });
