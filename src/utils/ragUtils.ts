@@ -68,6 +68,16 @@ export async function createVectorStore(
   const embeddings = new OpenAIEmbeddings({
     openai_api_key: process.env.OPENAI_API_KEY,
     model_name: embeddingModel,
+    callbacks: [{
+      handleLLMEnd: (output) => {
+        console.log("OpenAI Embedding Response:", {
+          model: output.model,
+          tokenUsage: output.tokenUsage,
+          startTime: output.startTime,
+          endTime: output.endTime
+        });
+      }
+    }]
   });
 
   // Create a ChromaDB collection with a specified name
