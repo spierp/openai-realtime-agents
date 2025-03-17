@@ -78,3 +78,12 @@ args = "python start-chroma-server.py"
 [[workflows.workflow.tasks]]
 task = "shell.exec"
 args = "npm run dev"
+
+[[workflows.workflow]]
+name = "Update Vector DB"
+author = 40476594
+mode = "sequential"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "npx tsx src/scripts/updateVectorStore.ts"

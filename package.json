@@ -8,6 +8,8 @@
     "start": "next start",
     "lint": "next lint",
     "create-vector-store": "tsx src/scripts/createVectorStore.ts",
+    "update-vector-store": "tsx src/scripts/updateVectorStore.ts",
+    "schedule-updates": "node src/scripts/scheduleUpdates.js",
     "start-chroma": "npx chromadb start --path=./chroma-db"
   },
   "dependencies": {
