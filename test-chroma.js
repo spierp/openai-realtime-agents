@@ -58,13 +58,19 @@ async function testChromaDB() {
     // Run a query on the existing collection
     console.log("\nRunning test query on knowledge_base collection...");
     const queryResults = await collection.query({
-      queryTexts: ["construction", "lake building"],
-      nResults: 5,
-      include: ["documents", "metadatas", "distances"],
+      queryTexts: ["test"],
+      nResults: 2
     });
 
     console.log("\n--- Query Results ---");
-    console.log(JSON.stringify(queryResults, null, 2));
+    if (queryResults && queryResults.documents) {
+      console.log("Found documents:", queryResults.documents);
+      if (queryResults.metadatas) {
+        console.log("Metadata:", queryResults.metadatas);
+      }
+    } else {
+      console.log("No results found");
+    }
   } catch (err) {
     console.error("Error during ChromaDB test:", err);
     if (err.message && err.message.includes("not found")) {
