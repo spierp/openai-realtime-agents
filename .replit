@@ -87,3 +87,12 @@ mode = "sequential"
 [[workflows.workflow.tasks]]
 task = "shell.exec"
 args = "npx tsx src/scripts/updateVectorStore.ts"
+
+[[workflows.workflow]]
+name = "Kill chroma"
+mode = "sequential"
+author = 40476594
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "pkill -f \"chroma run\""

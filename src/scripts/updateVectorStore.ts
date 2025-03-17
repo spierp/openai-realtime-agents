@@ -5,6 +5,7 @@ import * as fs from 'fs';
 import { Chroma } from "@langchain/community/vectorstores/chroma";
 import { OpenAIEmbeddings } from "@langchain/openai";
 import { Document } from "langchain/document";
+import { RecursiveCharacterTextSplitter } from "langchain/text_splitter";
 
 interface FileIndex {
   [filePath: string]: {
