@@ -16,7 +16,7 @@ localPort = 8000
 externalPort = 8000
 
 [workflows]
-runButton = "Run Full App"
+runButton = "Update Vector DB"
 
 [[workflows.workflow]]
 name = "Start ChromaDB"
