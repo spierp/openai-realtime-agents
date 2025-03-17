@@ -19,7 +19,7 @@ async function testChromaDB() {
   // Define the embedding function with OpenAI using text-embedding-3-small
   const embedder = new OpenAIEmbeddingFunction({
     openai_api_key: process.env.OPENAI_API_KEY,
-    model_name: "text-embedding-ada-002",
+    openai_model: "text-embedding-3-small",
   });
 
   try {
