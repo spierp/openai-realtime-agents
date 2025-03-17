@@ -1,3 +1,4 @@
+// createVectorStore.ts
 
 import { readMarkdownFiles, createTextChunks, createVectorStore } from '../utils/ragUtils';
 import * as path from 'path';

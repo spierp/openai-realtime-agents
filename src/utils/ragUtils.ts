@@ -1,3 +1,5 @@
+// ragUtils.ts
+
 import { Document } from "langchain/document";
 import { RecursiveCharacterTextSplitter } from "langchain/text_splitter";
 import { OpenAIEmbeddings } from "@langchain/openai";
@@ -93,8 +95,8 @@ export async function readMarkdownFiles(dirPath: string): Promise<Document[]> {
 // Function to create text chunks from documents
 export async function createTextChunks(documents: Document[]) {
   const textSplitter = new RecursiveCharacterTextSplitter({
-    chunkSize: 1000,
-    chunkOverlap: 200,
+    chunkSize: 1500,
+    chunkOverlap: 300,
   });
 
   return await textSplitter.splitDocuments(documents);
@@ -109,7 +111,7 @@ export async function createVectorStore(
     fs.mkdirSync(directory, { recursive: true });
   }
 
-  const embeddingModel = "text-embedding-3-small";
+  const embeddingModel = "text-embedding-3-large";
   console.log(`Creating embeddings using model: ${embeddingModel}`);
   const embeddings = new OpenAIEmbeddings({
     openAIApiKey: process.env.OPENAI_API_KEY, // LangChain uses camelCase
@@ -139,7 +141,7 @@ export async function createVectorStore(
 // Load the vector store
 export async function loadVectorStore(directory: string) {
   const embeddings = new OpenAIEmbeddings({
-    modelName: "text-embedding-3-small", // LangChain uses camelCase
+    modelName: "text-embedding-3-large", // LangChain uses camelCase
     openAIApiKey: process.env.OPENAI_API_KEY, // LangChain uses camelCase
   });
 
