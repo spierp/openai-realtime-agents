@@ -1,5 +1,25 @@
+
 // Simple script to test ChromaDB client connection
-const { ChromaClient, OpenAIEmbeddingFunction } = require("chromadb");
+const { ChromaClient } = require("chromadb");
+const { OpenAI } = require("openai");
+
+// Custom embedding function that doesn't pass dimensions parameter
+class CustomOpenAIEmbeddingFunction {
+  constructor(options) {
+    this.openai = new OpenAI({
+      apiKey: options.openai_api_key
+    });
+    this.model = options.model_name || "text-embedding-ada-002";
+  }
+
+  async generate(texts) {
+    const response = await this.openai.embeddings.create({
+      model: this.model,
+      input: texts,
+    });
+    return response.data.map(item => item.embedding);
+  }
+}
 
 async function testChromaDB() {
   console.log("Testing connection to ChromaDB server...");
@@ -16,8 +36,8 @@ async function testChromaDB() {
   // Create a client that connects to the server
   const client = new ChromaClient({ path: "http://0.0.0.0:8000" });
 
-  // Define the embedding function with OpenAI using text-embedding-3-small
-  const embedder = new OpenAIEmbeddingFunction({
+  // Define our custom embedding function
+  const embedder = new CustomOpenAIEmbeddingFunction({
     openai_api_key: process.env.OPENAI_API_KEY,
     model_name: "text-embedding-ada-002",
   });
@@ -34,7 +54,6 @@ async function testChromaDB() {
       embeddingFunction: embedder,
     });
     console.log("Retrieved 'knowledge_base' collection");
-    // console.log("Collection metadata:", await collection.getMetadata());
 
     // Run a query on the existing collection
     console.log("\nRunning test query on knowledge_base collection...");
