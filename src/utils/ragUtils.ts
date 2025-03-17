@@ -29,6 +29,8 @@ export async function readMarkdownFiles(dirPath: string): Promise<Document[]> {
         
         // Split the path into segments for hierarchical categorization
         const pathSegments = category.split(path.sep).filter(segment => segment.length > 0);
+        console.log(`File: ${entry.name}, Path: ${entryRelativePath}`);
+        console.log(`Path segments: ${JSON.stringify(pathSegments)}`);
         
         // Create metadata with hierarchical categories
         const metadata: Record<string, any> = {
@@ -40,16 +42,20 @@ export async function readMarkdownFiles(dirPath: string): Promise<Document[]> {
         // Add primary, secondary, tertiary categories based on directory levels
         if (pathSegments.length > 0) {
           metadata.primary_category = pathSegments[0];
+          console.log(`Setting primary_category: ${pathSegments[0]}`);
           
           if (pathSegments.length > 1) {
             metadata.secondary_category = pathSegments[1];
+            console.log(`Setting secondary_category: ${pathSegments[1]}`);
             
             if (pathSegments.length > 2) {
               metadata.tertiary_category = pathSegments[2];
+              console.log(`Setting tertiary_category: ${pathSegments[2]}`);
               
               // For very deep hierarchies, store the rest as an array
               if (pathSegments.length > 3) {
                 metadata.additional_categories = pathSegments.slice(3);
+                console.log(`Setting additional_categories: ${JSON.stringify(pathSegments.slice(3))}`);
               }
             }
           }
