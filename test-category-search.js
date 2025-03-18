@@ -18,7 +18,21 @@ async function testCategorySearch() {
   
   const embedder = new OpenAIEmbeddingFunction({
     openai_api_key: process.env.OPENAI_API_KEY,
-    openai_model: embeddingModel
+    openai_model: embeddingModel,
+    debug: true, // Enable debug logging
+    axios: {
+      interceptors: {
+        response: [(response) => {
+          console.log('OpenAI API Response:', {
+            model: response.data.model,
+            input_tokens: response.data.usage?.prompt_tokens,
+            embedding_count: response.data.data?.length,
+            first_embedding_size: response.data.data?.[0]?.embedding?.length
+          });
+          return response;
+        }]
+      }
+    }
   });
 
   try {
