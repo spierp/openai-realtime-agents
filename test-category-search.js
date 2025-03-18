@@ -64,7 +64,9 @@ async function testCategorySearch() {
     for (let i = 0; i < projectResults.metadatas.length; i++) {
       console.log(`\nResult ${i+1}:`);
       console.log("Metadata:", projectResults.metadatas[i]);
-      console.log("Document:", projectResults.documents[i].substring(0, 100));
+      console.log("Document:", typeof projectResults.documents[i] === 'string' 
+        ? projectResults.documents[i].substring(0, 100) 
+        : JSON.stringify(projectResults.documents[i]).substring(0, 100));
     }
 
     // Test query for Work area
