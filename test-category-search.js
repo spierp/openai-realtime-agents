@@ -73,9 +73,11 @@ async function testCategorySearch() {
     console.log("\nSearching for documents in Work area...");
     const workResults = await collection.query({
       queryTexts: ["construction"],
-      where: { 
-        primary_category: "04 Areas",
-        secondary_category: "Work"
+      where: {
+        $and: [
+          { primary_category: "04 Areas" },
+          { secondary_category: "Work" }
+        ]
       },
       nResults: 3
     });
