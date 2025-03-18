@@ -78,6 +78,13 @@ export async function readMarkdownFiles(dirPath: string): Promise<Document[]> {
           }
         }
 
+        console.log('\n--- Document Processing Details ---');
+        console.log(`File: ${entryRelativePath}`);
+        console.log('Metadata:', JSON.stringify(metadata, null, 2));
+        console.log('Content Preview:', content.substring(0, 150) + '...');
+        console.log('Tags:', tags);
+        console.log('----------------------------------\n');
+
         documents.push(
           new Document({
             pageContent: content,
@@ -110,7 +117,7 @@ export async function createVectorStore(
   if (!fs.existsSync(directory)) {
     fs.mkdirSync(directory, { recursive: true });
   }
-  
+
   const embeddingModel = "text-embedding-3-small";
   console.log(`Creating embeddings using model: ${embeddingModel}`);
   const embeddings = new OpenAIEmbeddings({
