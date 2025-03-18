@@ -25,11 +25,9 @@ async function testTagSearch() {
 
     // Search for documents with "family" tag
     console.log("\nSearching for documents with 'family' tag...");
-    const results = await collection.query({
-      queryTexts: [""], // Empty query text to match all documents
+    const results = await collection.get({
       where: { tags: "family" },
-      include: ["metadatas", "documents"],
-      nResults: 5,
+      limit: 5
     });
 
     console.log("\n--- Documents with 'family' tag ---");
