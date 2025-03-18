@@ -13,7 +13,7 @@ async function testCategorySearch() {
   const client = new ChromaClient({ path: "http://0.0.0.0:8000" });
 
   // Define the embedding function with OpenAI
-  const embeddingModel = "text-embedding-3-large";
+  const embeddingModel = "text-embedding-3-small";
   console.log(`Using embedding model: ${embeddingModel}`);
   
   const embedder = new OpenAIEmbeddingFunction({

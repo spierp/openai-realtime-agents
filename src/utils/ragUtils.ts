@@ -111,7 +111,7 @@ export async function createVectorStore(
     fs.mkdirSync(directory, { recursive: true });
   }
   
-  const embeddingModel = "text-embedding-3-large";
+  const embeddingModel = "text-embedding-3-small";
   console.log(`Creating embeddings using model: ${embeddingModel}`);
   const embeddings = new OpenAIEmbeddings({
     apiKey: process.env.OPENAI_API_KEY,
@@ -141,7 +141,7 @@ export async function createVectorStore(
 // Load the vector store
 export async function loadVectorStore(directory: string) {
   const embeddings = new OpenAIEmbeddings({
-    modelName: "text-embedding-3-large", // LangChain uses camelCase
+    modelName: "text-embedding-3-small", // LangChain uses camelCase
     openAIApiKey: process.env.OPENAI_API_KEY, // LangChain uses camelCase
   });
 
