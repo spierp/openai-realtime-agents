@@ -110,12 +110,12 @@ export async function createVectorStore(
   if (!fs.existsSync(directory)) {
     fs.mkdirSync(directory, { recursive: true });
   }
-
+  
   const embeddingModel = "text-embedding-3-large";
   console.log(`Creating embeddings using model: ${embeddingModel}`);
   const embeddings = new OpenAIEmbeddings({
-    openAIApiKey: process.env.OPENAI_API_KEY, // LangChain uses camelCase
-    modelName: embeddingModel, // LangChain uses camelCase
+    apiKey: process.env.OPENAI_API_KEY,
+    model: embeddingModel,
     callbacks: [{
       handleLLMEnd: (output) => {
         console.log("OpenAI Embedding Response:", {
