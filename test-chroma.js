@@ -1,3 +1,6 @@
+// Load environment variables from .env file
+require('dotenv').config();
+
 // Simple script to test ChromaDB client connection
 const { ChromaClient, OpenAIEmbeddingFunction } = require("chromadb");
 
@@ -8,13 +11,15 @@ async function testChromaDB() {
   if (!process.env.OPENAI_API_KEY) {
     console.error("ERROR: OPENAI_API_KEY environment variable is not set!");
     console.log(
-      "Please set the OPENAI_API_KEY in your environment variables or secrets.",
+      "Please set the OPENAI_API_KEY in your .env file using the .env.example template.",
     );
     return;
   }
 
-  // Create a client that connects to the server
-  const client = new ChromaClient({ path: "http://0.0.0.0:8000" });
+  // Create a client that connects to the server using environment variables
+  const client = new ChromaClient({ 
+    path: `http://${process.env.CHROMA_SERVER_HOST || '0.0.0.0'}:${process.env.CHROMA_SERVER_PORT || '8000'}` 
+  });
 
   // Define the embedding function with OpenAI using text-embedding-3-small
   const embedder = new OpenAIEmbeddingFunction({

@@ -38,3 +38,37 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 todo.md
+
+# Python
+venv/
+*.pyc
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+.coverage
+htmlcov/
+
+# ChromaDB
+/chroma-db/
+chroma.log
+
+# OpenAI API keys and other sensitive data
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+Icon
+._*
+
+# VS Code
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
