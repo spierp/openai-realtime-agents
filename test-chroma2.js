@@ -1,3 +1,4 @@
+require('dotenv').config();
 const { ChromaClient, OpenAIEmbeddingFunction } = require("chromadb");
 
 class CustomOpenAIEmbeddingFunction extends OpenAIEmbeddingFunction {

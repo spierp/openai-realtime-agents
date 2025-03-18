@@ -72,3 +72,7 @@ Icon
 !.vscode/tasks.json
 !.vscode/launch.json
 !.vscode/extensions.json
+
+# Logs
+/logs/
+*.log

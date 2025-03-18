@@ -1,3 +1,4 @@
+require('dotenv').config();
 const { ChromaClient, OpenAIEmbeddingFunction } = require("chromadb");
 
 async function testCategorySearch() {
@@ -88,7 +89,9 @@ async function testCategorySearch() {
     for (let i = 0; i < workResults.metadatas.length; i++) {
       console.log(`\nResult ${i+1}:`);
       console.log("Metadata:", workResults.metadatas[i]);
-      console.log("Document:", workResults.documents[i].substring(0, 100));
+      console.log("Document:", typeof workResults.documents[i] === 'string' 
+        ? workResults.documents[i].substring(0, 100) 
+        : JSON.stringify(workResults.documents[i]).substring(0, 100));
     }
 
   } catch (err) {

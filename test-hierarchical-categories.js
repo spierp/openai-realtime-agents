@@ -1,4 +1,4 @@
-
+require('dotenv').config();
 const { ChromaClient } = require("chromadb");
 
 async function testHierarchicalCategories() {

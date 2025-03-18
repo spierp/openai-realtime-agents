@@ -1,4 +1,4 @@
-
+require('dotenv').config();
 // Simple script to run the vector store update manually
 const { spawn } = require('child_process');
 const path = require('path');
