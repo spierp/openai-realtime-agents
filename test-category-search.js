@@ -23,12 +23,15 @@ async function testCategorySearch() {
     axios: {
       interceptors: {
         request: [(config) => {
-          console.log('OpenAI API Request Model:', config.data ? JSON.parse(config.data).model : 'unknown');
+          console.log('OpenAI API Request:', {
+            model: config.data ? JSON.parse(config.data).model : 'unknown',
+            headers: config.headers
+          });
           return config;
         }],
         response: [(response) => {
-          console.log('Full OpenAI API Response:', {
-            raw_response: response.data,
+          console.log('OpenAI API Response:', {
+            headers: response.headers,
             model_used: response.data.model,
             embedding_dimension: response.data.data?.[0]?.embedding?.length
           });
