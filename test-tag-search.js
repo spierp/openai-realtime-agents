@@ -26,11 +26,11 @@ async function testTagSearch() {
     // Search for documents with "family" tag
     console.log("\nSearching for documents with 'family' tag...");
     const results = await collection.get({
-      where: { tags: "family" },
-      limit: 5
+      where: { tags: "journal" },
+      limit: 5,
     });
 
-    console.log("\n--- Documents with 'family' tag ---");
+    console.log("\n--- Documents with 'outdoors' tag ---");
     for (let i = 0; i < results.metadatas.length; i++) {
       console.log(`\nDocument ${i + 1}:`);
       console.log(`File: ${results.metadatas[i].fileName}`);
