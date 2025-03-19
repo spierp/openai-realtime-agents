@@ -7,7 +7,9 @@ async function testTagSearch() {
   console.log("Testing tag search in ChromaDB...");
 
   // Create a client that connects to the server
-  const client = new ChromaClient({ path: "http://0.0.0.0:8000" });
+  const client = new ChromaClient({ 
+    path: `http://${process.env.CHROMA_SERVER_HOST || '0.0.0.0'}:${process.env.CHROMA_SERVER_PORT || '8000'}`
+  });
 
   try {
     console.log("Connecting to ChromaDB server...");
@@ -17,10 +19,20 @@ async function testTagSearch() {
     );
 
     // Get the knowledge_base collection
-    const collection = await client.getCollection({
-      name: "knowledge_base",
-    });
-    console.log("Retrieved 'knowledge_base' collection");
+    let collection;
+    try {
+      collection = await client.getCollection({
+        name: "knowledge_base",
+      });
+      console.log("Retrieved 'knowledge_base' collection");
+    } catch (error) {
+      if (error.message.includes("not found")) {
+        console.error("Error: 'knowledge_base' collection not found. Please run the vector store creation script first:");
+        console.log("npm run create-vector-store");
+        process.exit(1);
+      }
+      throw error;
+    }
 
     // Get collection info
     const info = await collection.count();
@@ -35,8 +47,13 @@ async function testTagSearch() {
 
     // Create logs directory if it doesn't exist
     const logsDir = path.join(__dirname, 'logs');
-    if (!fs.existsSync(logsDir)) {
-      fs.mkdirSync(logsDir);
+    try {
+      if (!fs.existsSync(logsDir)) {
+        fs.mkdirSync(logsDir, { recursive: true });
+      }
+    } catch (error) {
+      console.error("Error creating logs directory:", error);
+      process.exit(1);
     }
 
     // Create a log file with timestamp

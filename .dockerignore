@@ -1,0 +1,89 @@
+# Node.js
+node_modules
+npm-debug.log
+yarn-debug.log
+yarn-error.log
+
+# Next.js
+.next/
+out/
+
+# Build files
+dist/
+build/
+*.tsbuildinfo
+
+# Environment files
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Git
+.git/
+.gitignore
+.github/
+
+# Development files
+.vscode/
+.idea/
+*.swp
+*.swo
+.DS_Store
+*.pem
+
+# Logs
+logs/
+*.log
+
+# Tests
+__tests__/
+test/
+tests/
+coverage/
+
+# Docker
+.dockerignore
+Dockerfile*
+docker-compose*
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+venv/
+ENV/
+env/
+
+# ChromaDB data (will be mounted as a volume)
+chroma-db/
+
+# Documentation
+README.md
+*.md
+docs/
+
+# Debug files
+*.dump
+*.core
+*.stackdump
+
+# Temporary files
+tmp/
+temp/
+*.tmp
+
+# Cache
+.cache/
+.npm
+.eslintcache
+.stylelintcache
+
+# Large binary files
+*.gz
+*.zip
+*.tar
+*.rar 

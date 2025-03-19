@@ -1,7 +1,10 @@
-
-const { spawn } = require('child_process');
-const path = require('path');
-const fs = require('fs');
+/* eslint-disable */
+import { config } from 'dotenv';
+import { scheduleJob } from 'node-schedule';
+import { updateVectorStore } from './updateVectorStore';
+import { spawn } from 'child_process';
+import path from 'path';
+import fs from 'fs';
 
 // Configuration
 const UPDATE_INTERVAL = 60 * 60 * 1000; // 1 hour in milliseconds

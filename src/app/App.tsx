@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import { v4 as uuidv4 } from "uuid";
 
@@ -25,7 +25,7 @@ import { createRealtimeConnection } from "./lib/realtimeConnection";
 // Agent configs
 import { allAgentSets, defaultAgentSetKey } from "@/app/agentConfigs";
 
-function App() {
+function AppContent() {
   const searchParams = useSearchParams();
 
   const { transcriptItems, addTranscriptMessage, addTranscriptBreadcrumb } =
@@ -511,6 +511,15 @@ function App() {
         setIsAudioPlaybackEnabled={setIsAudioPlaybackEnabled}
       />
     </div>
+  );
+}
+
+// Wrapper component with Suspense
+function App() {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <AppContent />
+    </Suspense>
   );
 }
 

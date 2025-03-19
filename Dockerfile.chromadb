@@ -1,0 +1,32 @@
+# Use Python slim image
+FROM python:3.10-slim
+
+# Set working directory
+WORKDIR /app
+
+# Install system dependencies
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends gcc libc6-dev && \
+    rm -rf /var/lib/apt/lists/*
+
+# Copy requirements file
+COPY requirements.txt .
+
+# Install dependencies
+RUN pip install --no-cache-dir -r requirements.txt && \
+    pip install --no-cache-dir chromadb
+
+# Create data directory
+RUN mkdir -p /app/chroma-db
+
+# Set environment variable to indicate we're in Docker
+ENV DOCKER_CHROMA_DATA_DIR=/app/chroma-db
+
+# Copy the script
+COPY start-chroma-server.py .
+
+# Expose port
+EXPOSE 8000
+
+# Start ChromaDB server using our script
+CMD ["python", "start-chroma-server.py"] 

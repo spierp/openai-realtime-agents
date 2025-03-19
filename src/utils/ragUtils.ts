@@ -122,17 +122,7 @@ export async function createVectorStore(
   console.log(`Creating embeddings using model: ${embeddingModel}`);
   const embeddings = new OpenAIEmbeddings({
     apiKey: process.env.OPENAI_API_KEY,
-    model: embeddingModel,
-    callbacks: [{
-      handleLLMEnd: (output) => {
-        console.log("OpenAI Embedding Response:", {
-          model: output.model,
-          tokenUsage: output.tokenUsage,
-          startTime: output.startTime,
-          endTime: output.endTime
-        });
-      }
-    }]
+    model: embeddingModel
   });
 
   // Create a ChromaDB collection with a specified name
@@ -146,7 +136,7 @@ export async function createVectorStore(
 }
 
 // Load the vector store
-export async function loadVectorStore(directory: string) {
+export async function loadVectorStore() {
   const embeddings = new OpenAIEmbeddings({
     modelName: "text-embedding-3-small", // LangChain uses camelCase
     openAIApiKey: process.env.OPENAI_API_KEY, // LangChain uses camelCase

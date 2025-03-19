@@ -70,3 +70,148 @@ This fully specifies the agent set that was used in the interaction shown in the
 ## Core Contributors
 - Noah MacCallum - [noahmacca](https://x.com/noahmacca)
 - Ilan Bigio - [ibigio](https://github.com/ibigio)
+
+# OpenAI Realtime Agents
+
+A hobby project demonstrating the OpenAI Realtime API with a Next.js frontend and ChromaDB for vector storage.
+
+## Local Development Setup
+
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/yourusername/openai-realtime-agents.git
+   cd openai-realtime-agents
+   ```
+
+2. Create a `.env` file from the template:
+   ```bash
+   cp .env.example .env
+   ```
+   
+3. Add your API keys and configuration to `.env`
+
+4. Install dependencies:
+   ```bash
+   npm install
+   ```
+
+5. Start the development server:
+   ```bash
+   npm run dev
+   ```
+
+## Docker Deployment
+
+### Local Testing
+
+1. Make sure Docker and Docker Compose are installed on your system
+
+2. Create a `.env` file from the template:
+   ```bash
+   cp .env.example .env
+   ```
+
+3. Add your API keys and configuration to `.env`
+
+4. Run the deployment script:
+   ```bash
+   ./deploy.sh
+   ```
+
+5. Access your application:
+   - Next.js frontend: http://localhost:3000
+   - ChromaDB server: http://localhost:8000
+
+### Production Deployment (DigitalOcean)
+
+1. Create a DigitalOcean Droplet (Basic $10/month plan is sufficient)
+   - Choose Ubuntu 22.04 LTS
+   - Add your SSH key for secure access
+
+2. SSH into your Droplet:
+   ```bash
+   ssh root@your_droplet_ip
+   ```
+
+3. Install Docker and Docker Compose:
+   ```bash
+   apt update
+   apt install -y docker.io docker-compose
+   systemctl enable docker
+   systemctl start docker
+   ```
+
+4. Clone your repository:
+   ```bash
+   git clone https://github.com/yourusername/openai-realtime-agents.git
+   cd openai-realtime-agents
+   ```
+
+5. Create a `.env` file with your production settings:
+   ```bash
+   cp .env.example .env
+   nano .env  # Edit your settings
+   ```
+
+6. Make the deployment script executable and run it:
+   ```bash
+   chmod +x deploy.sh
+   ./deploy.sh
+   ```
+
+7. Set up a firewall:
+   ```bash
+   ufw allow 22/tcp
+   ufw allow 80/tcp
+   ufw allow 443/tcp
+   ufw allow 3000/tcp  # For Next.js (if not using a reverse proxy)
+   ufw allow 8000/tcp  # For ChromaDB (if needed externally)
+   ufw enable
+   ```
+
+8. (Optional) Set up Nginx as a reverse proxy:
+   ```bash
+   apt install -y nginx
+   
+   # Configure Nginx (sample config)
+   nano /etc/nginx/sites-available/default
+   
+   # Restart Nginx
+   systemctl restart nginx
+   ```
+
+9. (Optional) Set up SSL with Let's Encrypt:
+   ```bash
+   apt install -y certbot python3-certbot-nginx
+   certbot --nginx -d yourdomain.com
+   ```
+
+## Docker Images
+
+This project uses a simple and straightforward approach for Docker images:
+
+- **Next.js**: Uses Node.js slim image for simplicity and compatibility
+- **ChromaDB**: Uses Python slim image for ChromaDB's dependencies
+
+This simple approach prioritizes:
+- Ease of maintenance
+- Simplicity in configuration
+- Reliability across environments
+
+## Configuration
+
+See `.env.example` for all available configuration options.
+
+## Backup Strategy
+
+The deployment script includes an optional backup feature. Set `BACKUP_DIR` and `BACKUP_RETENTION_DAYS` in your `.env` file to enable automated daily backups.
+
+## Troubleshooting
+
+- **Container not starting**: Check logs with `docker-compose logs`
+- **Next.js build failing**: Try `docker-compose build --no-cache nextjs`
+- **ChromaDB connection issues**: Ensure the environment variables in `.env` are correct
+
+## License
+
+[MIT License](LICENSE)

@@ -1,5 +1,3 @@
-
-import { readMarkdownFiles, createTextChunks, createVectorStore } from '../utils/ragUtils';
 import * as path from 'path';
 import * as fs from 'fs';
 import { Chroma } from "@langchain/community/vectorstores/chroma";
@@ -17,7 +15,6 @@ interface FileIndex {
 // File to store the index data
 const INDEX_FILE = path.join(process.cwd(), 'knowledge-index.json');
 const KNOWLEDGE_DIR = path.join(process.cwd(), 'knowledge');
-const VECTOR_STORE_DIR = path.join(process.cwd(), 'chroma-db');
 
 // Function to load the previous index
 function loadIndex(): FileIndex {
