@@ -68,7 +68,7 @@ export default function Login() {
             <input
               id="apiKey"
               name="apiKey"
-              type="text"
+              type="password"
               autoComplete="off"
               required
               className="block w-full px-3 py-2 mt-1 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"

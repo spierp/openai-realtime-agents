@@ -23,6 +23,10 @@ RUN touch .env
 # Build the Next.js application
 RUN npm run build
 
+# Ensure static files and public folder are properly copied to the standalone directory
+RUN cp -R .next/static .next/standalone/.next/static && \
+    cp -R public .next/standalone/
+
 # Set environment to production for runtime
 ENV NODE_ENV production
 

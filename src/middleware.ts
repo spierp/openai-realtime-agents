@@ -1,14 +1,34 @@
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
 
-export function middleware(request: NextRequest) {
-  // Skip authentication for login page and static assets
+// This function determines if a URL should be protected by authentication
+function shouldProtectPath(pathname: string): boolean {
+  const PUBLIC_PATHS = [
+    '/login',
+    '/api/verify-key',
+    '/favicon.ico'
+  ];
+
+  // File extensions that should be publicly accessible
+  const PUBLIC_EXTENSIONS = ['.png', '.jpg', '.jpeg', '.gif', '.svg', '.ico', '.webp'];
+
+  // Skip static files and public paths
   if (
-    request.nextUrl.pathname.startsWith('/login') ||
-    request.nextUrl.pathname.startsWith('/_next') ||
-    request.nextUrl.pathname.startsWith('/favicon.ico') ||
-    request.nextUrl.pathname.startsWith('/api/verify-key')
+    pathname.startsWith('/_next/') ||
+    PUBLIC_PATHS.some(path => pathname.startsWith(path)) ||
+    PUBLIC_EXTENSIONS.some(ext => pathname.toLowerCase().endsWith(ext))
   ) {
+    return false;
+  }
+
+  return true;
+}
+
+export function middleware(request: NextRequest) {
+  const { pathname } = request.nextUrl;
+
+  // Skip authentication for static files and public paths
+  if (!shouldProtectPath(pathname)) {
     return NextResponse.next();
   }
 
@@ -24,9 +44,10 @@ export function middleware(request: NextRequest) {
     try {
       // Decode and trim the cookie value
       apiKey = decodeURIComponent(cookieApiKey).trim();
-    } catch {
+    } catch (e) {
       // If decoding fails, use as-is but still trim
       apiKey = cookieApiKey.trim();
+      void e; // Explicitly void the error to avoid unused variable warning
     }
   }
   
@@ -52,7 +73,7 @@ export function middleware(request: NextRequest) {
   
   if (!isValid) {
     // If accessing the API
-    if (request.nextUrl.pathname.startsWith('/api/')) {
+    if (pathname.startsWith('/api/')) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
     // If accessing a page, redirect to login
@@ -67,7 +88,4 @@ function redirectToLogin(request: NextRequest) {
   return NextResponse.redirect(new URL('/login', request.url));
 }
 
-// Apply middleware to all routes except login
-export const config = {
-  matcher: ['/((?!login|_next/static|_next/image|favicon.ico).*)'],
-} 
+// NO matcher: use the shouldProtectPath function inside middleware instead 

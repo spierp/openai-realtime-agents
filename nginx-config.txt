@@ -1,0 +1,93 @@
+server {
+    server_name spierp.com www.spierp.com;
+
+    # Handle specific Next.js static file types with explicit content types
+    location ~* ^/_next/static/.+\.(css)$ {
+        proxy_pass http://localhost:3000;
+        proxy_http_version 1.1;
+        proxy_set_header Host $host;
+        proxy_cache_bypass $http_upgrade;
+        expires 30d;
+        add_header Cache-Control "public, max-age=2592000";
+        add_header Content-Type "text/css";
+    }
+
+    location ~* ^/_next/static/.+\.(js)$ {
+        proxy_pass http://localhost:3000;
+        proxy_http_version 1.1;
+        proxy_set_header Host $host;
+        proxy_cache_bypass $http_upgrade;
+        expires 30d;
+        add_header Cache-Control "public, max-age=2592000";
+        add_header Content-Type "application/javascript";
+    }
+
+    location ~* ^/_next/static/.+\.(json)$ {
+        proxy_pass http://localhost:3000;
+        proxy_http_version 1.1;
+        proxy_set_header Host $host;
+        proxy_cache_bypass $http_upgrade;
+        expires 30d;
+        add_header Cache-Control "public, max-age=2592000";
+        add_header Content-Type "application/json";
+    }
+
+    # Handle image files from public folder
+    location ~* \.(png|jpg|jpeg|gif|ico|svg|webp)$ {
+        proxy_pass http://localhost:3000;
+        proxy_http_version 1.1;
+        proxy_set_header Host $host;
+        proxy_cache_bypass $http_upgrade;
+        expires 30d;
+        add_header Cache-Control "public, max-age=2592000";
+        # Content-Type will be set automatically based on file extension
+    }
+
+    # All other _next/static files
+    location /_next/static/ {
+        proxy_pass http://localhost:3000/_next/static/;
+        proxy_http_version 1.1;
+        proxy_set_header Host $host;
+        proxy_cache_bypass $http_upgrade;
+        expires 30d;
+        add_header Cache-Control "public, max-age=2592000";
+    }
+
+    # Data endpoint
+    location /_next/data/ {
+        proxy_pass http://localhost:3000/_next/data/;
+        proxy_http_version 1.1;
+        proxy_set_header Host $host;
+        proxy_cache_bypass $http_upgrade;
+    }
+
+    # Handle all other requests
+    location / {
+        proxy_pass http://localhost:3000;
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection 'upgrade';
+        proxy_set_header Host $host;
+        proxy_cache_bypass $http_upgrade;
+    }
+
+    listen 443 ssl; # managed by Certbot
+    ssl_certificate /etc/letsencrypt/live/spierp.com/fullchain.pem; # managed by Certbot
+    ssl_certificate_key /etc/letsencrypt/live/spierp.com/privkey.pem; # managed by Certbot
+    include /etc/letsencrypt/options-ssl-nginx.conf; # managed by Certbot
+    ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem; # managed by Certbot
+}
+
+server {
+    if ($host = www.spierp.com) {
+        return 301 https://$host$request_uri;
+    } # managed by Certbot
+
+    if ($host = spierp.com) {
+        return 301 https://$host$request_uri;
+    } # managed by Certbot
+
+    listen 80;
+    server_name spierp.com www.spierp.com;
+    return 404; # managed by Certbot
+} 

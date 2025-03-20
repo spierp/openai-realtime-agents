@@ -16,6 +16,9 @@ const nextConfig = {
     NEXT_PUBLIC_API_URL: process.env.NEXT_PUBLIC_API_URL,
   },
   
+  // Add trailing slash to improve compatibility with Nginx
+  trailingSlash: true,
+  
   // Configure redirects if needed
   async redirects() {
     return [];

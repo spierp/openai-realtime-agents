@@ -46,9 +46,11 @@ rsync -avz --exclude 'node_modules' \
   --exclude '.env*' \
   --exclude 'logs' \
   --exclude 'chroma-db' \
+  --exclude '*debug*' \
+  --exclude 'debug*' \
   ./ ${SERVER_USER}@${SERVER_IP}:${REMOTE_DIR}/
 
-# Deploy on server
+# Deploy on server ( docker compose build --no-cache && \)
 echo -e "${BLUE}🐳 Building and starting Docker containers...${NC}"
 ssh ${SERVER_USER}@${SERVER_IP} "cd ${REMOTE_DIR} && \
   docker compose down && \
