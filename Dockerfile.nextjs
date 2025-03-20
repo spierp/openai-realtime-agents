@@ -18,7 +18,7 @@ RUN npm ci
 COPY . .
 
 # Create default .env file if needed
-RUN echo "OPENAI_API_KEY=$OPENAI_API_KEY" > .env
+RUN touch .env
 
 # Build the Next.js application
 RUN npm run build
@@ -30,4 +30,4 @@ ENV NODE_ENV production
 EXPOSE 3000
 
 # Start the application
-CMD ["npm", "run", "start"] 
+CMD ["node", ".next/standalone/server.js"] 
