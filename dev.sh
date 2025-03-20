@@ -16,6 +16,10 @@ if [ ! -f ".env" ]; then
   exit 1
 fi
 
+# Export environment variables from .env file
+echo -e "${BLUE}🔐 Loading environment variables...${NC}"
+export $(grep -v '^#' .env | xargs)
+
 # Create logs directory if it doesn't exist
 mkdir -p logs
 

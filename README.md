@@ -186,6 +186,162 @@ A hobby project demonstrating the OpenAI Realtime API with a Next.js frontend an
    certbot --nginx -d yourdomain.com
    ```
 
+## Setting Up Nginx and SSL on DigitalOcean
+
+### Configuring Nginx for Port Forwarding
+
+1. Install Nginx:
+   ```bash
+   apt-get update
+   apt-get install -y nginx
+   ```
+
+2. Create Nginx configuration file:
+   ```bash
+   nano /etc/nginx/sites-available/realtime-agent
+   ```
+
+3. Add this configuration (replace yourdomain.com with your domain):
+   ```
+   server {
+       listen 80;
+       server_name yourdomain.com www.yourdomain.com;
+
+       location / {
+           proxy_pass http://localhost:3000;
+           proxy_http_version 1.1;
+           proxy_set_header Upgrade $http_upgrade;
+           proxy_set_header Connection 'upgrade';
+           proxy_set_header Host $host;
+           proxy_cache_bypass $http_upgrade;
+       }
+   }
+   ```
+
+4. Enable the site and remove default config:
+   ```bash
+   ln -s /etc/nginx/sites-available/realtime-agent /etc/nginx/sites-enabled/
+   rm -f /etc/nginx/sites-enabled/default
+   ```
+
+5. Test and restart Nginx:
+   ```bash
+   nginx -t
+   systemctl restart nginx
+   ```
+
+### Setting Up SSL with Let's Encrypt
+
+1. Install Certbot:
+   ```bash
+   apt-get update
+   apt-get install -y certbot python3-certbot-nginx
+   ```
+
+2. Request SSL certificate:
+   ```bash
+   certbot --nginx -d yourdomain.com -d www.yourdomain.com
+   ```
+
+3. Follow the prompts:
+   - Enter your email address
+   - Agree to the terms of service
+   - Choose whether to redirect HTTP to HTTPS (recommended)
+
+4. Verify auto-renewal is configured:
+   ```bash
+   systemctl list-timers | grep certbot
+   ```
+
+Your application should now be accessible at https://yourdomain.com without specifying any port, and all traffic will be encrypted with SSL.
+
+## API Key Authentication
+
+This application uses a simple API key authentication system for personal use. This approach provides a lightweight security layer without the complexity of user management.
+
+### Setup
+
+1. Generate a secure random API key:
+   ```bash
+   openssl rand -base64 32
+   ```
+
+2. Add this key to your environment files:
+   ```
+   # In .env and .env.production
+   API_KEY=your_generated_key_here
+   ```
+
+3. Access your application:
+   - A login page will appear when you first visit the site
+   - Enter your API key to gain access
+   - The key will be stored in a cookie for 30 days
+
+### iOS Integration
+
+To use this authentication in an iOS app:
+
+```swift
+// Store API key in iOS Keychain
+func saveAPIKey(_ apiKey: String) {
+    let query: [String: Any] = [
+        kSecClass as String: kSecClassGenericPassword,
+        kSecAttrAccount as String: "apiKey",
+        kSecValueData as String: apiKey.data(using: .utf8)!
+    ]
+    SecItemDelete(query as CFDictionary)
+    SecItemAdd(query as CFDictionary, nil)
+}
+
+// Retrieve API key for API requests
+func getAPIKey() -> String? {
+    let query: [String: Any] = [
+        kSecClass as String: kSecClassGenericPassword,
+        kSecAttrAccount as String: "apiKey",
+        kSecReturnData as String: true
+    ]
+    
+    var result: CFTypeRef?
+    let status = SecItemCopyMatching(query as CFDictionary, &result)
+    
+    guard status == errSecSuccess else { return nil }
+    guard let data = result as? Data else { return nil }
+    
+    return String(data: data, encoding: .utf8)
+}
+
+// Add API key to network requests
+func makeAPIRequest(endpoint: String, completion: @escaping (Result<Data, Error>) -> Void) {
+    guard let apiKey = getAPIKey() else {
+        completion(.failure(NSError(domain: "Auth", code: 401)))
+        return
+    }
+    
+    guard let url = URL(string: "https://yourdomain.com/api/\(endpoint)") else {
+        completion(.failure(NSError(domain: "URL", code: 400)))
+        return
+    }
+    
+    var request = URLRequest(url: url)
+    request.setValue(apiKey, forHTTPHeaderField: "x-api-key")
+    
+    URLSession.shared.dataTask(with: request) { data, response, error in
+        // Handle response
+        if let error = error {
+            completion(.failure(error))
+            return
+        }
+        
+        guard let data = data else {
+            completion(.failure(NSError(domain: "Data", code: 204)))
+            return
+        }
+        
+        completion(.success(data))
+    }.resume()
+}
+```
+
 ## Docker Images
 
 This project uses a simple and straightforward approach for Docker images:
