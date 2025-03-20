@@ -76,3 +76,19 @@ Icon
 # Logs
 /logs/
 *.log
+
+# Project specific directories
+/logs
+/chroma-db
+
+# OS files
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+
+# Editor directories and files
+.idea/
+.vscode/
+*.sublime-workspace
+*.sublime-project

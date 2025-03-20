@@ -73,7 +73,28 @@ This fully specifies the agent set that was used in the interaction shown in the
 
 # OpenAI Realtime Agents
 
-A hobby project demonstrating the OpenAI Realtime API with a Next.js frontend and ChromaDB for vector storage.
+## Project Structure
+The project is organized into several directories:
+
+- **src/**: Core application code and UI components
+  - **app/**: Next.js application code
+  - **utils/**: Utility functions
+  - **middleware.ts**: Authentication middleware
+- **public/**: Public assets and images
+- **scripts/**: Utility scripts for development
+- **tests/**: Test scripts for various features
+- **knowledge/**: Knowledge base content
+- **chroma-db/**: ChromaDB data storage
+- **logs/**: Application logs
+
+Key files:
+- **deploy-to-do.sh**: Script to deploy to DigitalOcean
+- **dev.sh**: Local development script
+- **docker-compose.yml**: Docker Compose configuration
+- **Dockerfile.nextjs**: Next.js application Dockerfile
+- **Dockerfile.chromadb**: ChromaDB server Dockerfile
+- **next.config.js**: Next.js configuration
+- **start-chroma-server.py**: ChromaDB server script
 
 ## Local Development Setup
 
