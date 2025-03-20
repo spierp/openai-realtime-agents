@@ -409,15 +409,15 @@ function AppContent() {
         <div className="flex items-center">
           <div onClick={() => window.location.reload()} style={{ cursor: 'pointer' }}>
             <Image
-              src="/openai-logomark.svg"
-              alt="OpenAI Logo"
-              width={20}
-              height={20}
+              src="/brain.svg"
+              alt="Brain Logo"
+              width={40}
+              height={40}
               className="mr-2"
             />
           </div>
           <div>
-            Realtime API <span className="text-gray-500">Agents</span>
+            Spier Second Brain <span className="text-gray-500">Realtime Agents</span>
           </div>
         </div>
         <div className="flex items-center">
