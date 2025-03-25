@@ -46,6 +46,24 @@ const nextConfig = {
       },
     ];
   },
+  
+  // Webpack configuration to handle NodeJS-only modules
+  webpack: (config, { isServer }) => {
+    // If this is a server-side build
+    if (isServer) {
+      // Keep the Node.js modules as external
+      // This prevents bundling binary modules and their dependencies
+      config.externals.push(
+        'sharp', 
+        '@xenova/transformers', 
+        'onnxruntime-node',
+        'chromadb-default-embed',
+        'onnxruntime-common'
+      );
+    }
+    
+    return config;
+  },
 };
 
 module.exports = nextConfig; 

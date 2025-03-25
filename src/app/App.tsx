@@ -250,7 +250,8 @@ function AppContent() {
       session: {
         modalities: ["text", "audio"],
         instructions,
-        voice: "coral",
+        voice: "sage",
+        // voice_instructions: "Speak in a confident and enthusiastic tone. Be slightly dramatic and expressive in your delivery.",
         input_audio_format: "pcm16",
         output_audio_format: "pcm16",
         input_audio_transcription: { model: "gpt-4o-transcribe" },

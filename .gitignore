@@ -80,6 +80,7 @@ Icon
 # Project specific directories
 /logs
 /chroma-db
+/tests/logs
 
 # OS files
 .DS_Store

@@ -88,4 +88,16 @@ function redirectToLogin(request: NextRequest) {
   return NextResponse.redirect(new URL('/login', request.url));
 }
 
+// Configure which paths should trigger this middleware
+export const config = {
+  matcher: [
+    /*
+     * Match all API routes:
+     * - /api/rag
+     * - /api/session
+     */
+    '/api/:path*',
+  ],
+};
+
 // NO matcher: use the shouldProtectPath function inside middleware instead 
