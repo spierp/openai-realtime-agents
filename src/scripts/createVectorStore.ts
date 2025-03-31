@@ -6,12 +6,12 @@ import * as path from 'path';
 async function main() {
   console.log("Reading markdown files...");
   const knowledgeDir = path.join(process.cwd(), 'knowledge');
-  const documents = await readMarkdownFiles(knowledgeDir);
+  const result = await readMarkdownFiles(knowledgeDir);
   
-  console.log(`Found ${documents.length} markdown files`);
+  console.log(`Found ${result.fileCount} markdown files (${result.documents.length} valid documents, ${result.errorCount} errors)`);
   
   console.log("Creating text chunks...");
-  const chunks = await createTextChunks(documents);
+  const chunks = await createTextChunks(result.documents);
   
   console.log(`Created ${chunks.length} text chunks`);
   
