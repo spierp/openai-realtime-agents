@@ -14,12 +14,13 @@ async function testCategorySearch() {
   const client = new ChromaClient({ path: "http://0.0.0.0:8000" });
 
   // Define the embedding function with OpenAI
-  const embeddingModel = "text-embedding-3-small";
+  const embeddingModel = "text-embedding-3-large";
   console.log(`Using embedding model: ${embeddingModel}`);
   
   const embedder = new OpenAIEmbeddingFunction({
     openai_api_key: process.env.OPENAI_API_KEY,
     openai_model: embeddingModel,
+    openai_dimensions: 3072, // Explicitly set dimensions for large model
     debug: true,
     axios: {
       interceptors: {

@@ -1,126 +1,196 @@
 require('dotenv').config();
-const { ChromaClient } = require("chromadb");
+const { ChromaClient, OpenAIEmbeddingFunction } = require("chromadb");
 const fs = require('fs');
 const path = require('path');
+
+// Helper function to normalize tag format
+function normalizeTag(tag) {
+  // Convert to string, remove "#" prefix, and trim whitespace
+  const normalizedTag = String(tag).trim().toLowerCase();
+  
+  // Remove "#" prefix if present
+  return normalizedTag.startsWith('#') ? normalizedTag.substring(1).trim() : normalizedTag;
+}
 
 async function testTagSearch() {
   console.log("Testing tag search in ChromaDB...");
 
-  // Create a client that connects to the server
-  const client = new ChromaClient({ 
-    path: `http://${process.env.CHROMA_SERVER_HOST || '0.0.0.0'}:${process.env.CHROMA_SERVER_PORT || '8000'}`
+  // Check for OpenAI API Key
+  if (!process.env.OPENAI_API_KEY) {
+    console.error("ERROR: OPENAI_API_KEY environment variable is not set!");
+    return;
+  }
+
+  // Create a client
+  const client = new ChromaClient({ path: "http://0.0.0.0:8000" });
+
+  // Define the embedding function
+  const embedder = new OpenAIEmbeddingFunction({
+    openai_api_key: process.env.OPENAI_API_KEY,
+    openai_model: "text-embedding-3-large",
+    openai_dimensions: 3072
   });
 
+  // Get the collection
+  console.log("Connecting to ChromaDB server...");
+
   try {
-    console.log("Connecting to ChromaDB server...");
-    const collections = await client.listCollections();
-    console.log(
-      `Connected successfully! Available collections: ${JSON.stringify(collections)}`,
-    );
-
-    // Get the knowledge_base collection
-    let collection;
-    try {
-      collection = await client.getCollection({
-        name: "knowledge_base",
-      });
-      console.log("Retrieved 'knowledge_base' collection");
-    } catch (error) {
-      if (error.message.includes("not found")) {
-        console.error("Error: 'knowledge_base' collection not found. Please run the vector store creation script first:");
-        console.log("npm run create-vector-store");
-        process.exit(1);
-      }
-      throw error;
-    }
-
-    // Get collection info
-    const info = await collection.count();
-    console.log(`Collection contains ${info} documents`);
-
-    // Get all documents and their metadata
-    console.log("\nFetching all documents and metadata...");
-    const allResults = await collection.get({
-      limit: info, // Get all documents
-      include: ["metadatas", "documents"]
+    const collection = await client.getCollection({
+      name: "knowledge_base",
+      embeddingFunction: embedder
     });
-
+    
+    console.log(`Successfully connected. Collection has ${await collection.count()} documents.`);
+    
     // Create logs directory if it doesn't exist
     const logsDir = path.join(__dirname, 'logs');
-    try {
-      if (!fs.existsSync(logsDir)) {
-        fs.mkdirSync(logsDir, { recursive: true });
-      }
-    } catch (error) {
-      console.error("Error creating logs directory:", error);
-      process.exit(1);
+    if (!fs.existsSync(logsDir)) {
+      fs.mkdirSync(logsDir, { recursive: true });
     }
-
-    // Create a log file with timestamp
-    const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
-    const logFile = path.join(logsDir, `metadata-log-${timestamp}.json`);
     
-    // Format the data for better readability
-    const logData = allResults.metadatas.map((metadata, index) => ({
-      documentIndex: index,
-      fileName: metadata.fileName,
-      category: metadata.category,
-      primary_category: metadata.primary_category,
-      secondary_category: metadata.secondary_category,
-      tertiary_category: metadata.tertiary_category,
-      tags: metadata.tags,
-      source: metadata.source,
-      locFrom: metadata.locFrom,
-      locTo: metadata.locTo,
-      preview: typeof allResults.documents[index] === 'string' 
-        ? allResults.documents[index].substring(0, 100) 
-        : JSON.stringify(allResults.documents[index]).substring(0, 100)
-    }));
-
-    // Write to file
-    fs.writeFileSync(logFile, JSON.stringify(logData, null, 2));
-    console.log(`\nMetadata logged to: ${logFile}`);
-
-    // Also log a summary of unique values for each field
-    const summary = {
-      totalDocuments: info,
-      uniqueCategories: [...new Set(allResults.metadatas.map(m => m.category))],
-      uniquePrimaryCategories: [...new Set(allResults.metadatas.map(m => m.primary_category))],
-      uniqueSecondaryCategories: [...new Set(allResults.metadatas.map(m => m.secondary_category))],
-      uniqueTertiaryCategories: [...new Set(allResults.metadatas.map(m => m.tertiary_category))],
-      uniqueTags: [...new Set(allResults.metadatas.flatMap(m => Array.isArray(m.tags) ? m.tags : [m.tags]).filter(Boolean))]
-    };
-
-    const summaryFile = path.join(logsDir, `metadata-summary-${timestamp}.json`);
-    fs.writeFileSync(summaryFile, JSON.stringify(summary, null, 2));
-    console.log(`Summary logged to: ${summaryFile}`);
-
-    // Continue with the original tag search
-    console.log("\nSearching for documents with 'family' tag...");
-    const results = await collection.get({
-      where: { tags: "family" },
-      limit: 5,
+    // Dump all metadata for analysis
+    const allDocs = await collection.get({
+      include: ["metadatas"]
     });
-
-    console.log("\n--- Documents with 'family' tag ---");
-    console.log(`Found ${results.metadatas.length} documents`);
     
-    for (let i = 0; i < results.metadatas.length; i++) {
-      console.log(`\nDocument ${i + 1}:`);
-      console.log(`File: ${results.metadatas[i].fileName}`);
-      console.log(`Tags: ${Array.isArray(results.metadatas[i].tags) 
-        ? results.metadatas[i].tags.join(', ') 
-        : results.metadatas[i].tags || "No tags"}`);
-      console.log(`Category: ${results.metadatas[i].category}`);
-      console.log(
-        `Content Preview: ${typeof results.documents[i] === 'string' 
-          ? results.documents[i].substring(0, 150) 
-          : JSON.stringify(results.documents[i]).substring(0, 150)}...`,
-      );
+    // Create timestamp for log files
+    const timestamp = new Date().toISOString().replace(/:/g, '-');
+    
+    // Save complete metadata to a log file for analysis
+    const metadataLogPath = path.join(logsDir, `metadata-log-${timestamp}.json`);
+    fs.writeFileSync(metadataLogPath, JSON.stringify(allDocs.metadatas, null, 2));
+    console.log(`Logged all metadata to ${metadataLogPath}`);
+    
+    // Create a summary of metadata fields
+    const fieldSummary = {};
+    allDocs.metadatas.forEach(metadata => {
+      Object.keys(metadata).forEach(key => {
+        if (!fieldSummary[key]) {
+          fieldSummary[key] = {
+            count: 0,
+            examples: []
+          };
+        }
+        
+        fieldSummary[key].count++;
+        
+        // Store a few examples of values
+        if (fieldSummary[key].examples.length < 3) {
+          fieldSummary[key].examples.push(metadata[key]);
+        }
+      });
+    });
+    
+    // Save metadata summary to file
+    const summaryPath = path.join(logsDir, `metadata-summary-${timestamp}.json`);
+    fs.writeFileSync(summaryPath, JSON.stringify(fieldSummary, null, 2));
+    console.log(`Logged metadata summary to ${summaryPath}`);
+    
+    // The tag we're searching for (normalize it to handle "#" variations)
+    const targetTag = "family"; // This will match both "family" and "#family"
+    const normalizedTargetTag = normalizeTag(targetTag);
+    
+    // Method 1: Try to find documents with tag_0 or tag_1 = target tag
+    console.log(`\nMethod 1: Searching for documents with normalized tag '${normalizedTargetTag}'...`);
+    let familyDocs = [];
+    
+    try {
+      // Get all documents
+      const allTagDocs = await collection.get({
+        include: ["metadatas", "documents"]
+      });
+      
+      // Client-side filtering to find matches in any tag field regardless of "#" prefix
+      const filteredDocs = [];
+      
+      for (let i = 0; i < allTagDocs.ids.length; i++) {
+        const metadata = allTagDocs.metadatas[i];
+        let hasMatchingTag = false;
+        
+        // Check all fields that start with "tag_" (tag_0, tag_1, etc.)
+        for (const key in metadata) {
+          if (key.startsWith('tag_') && normalizeTag(metadata[key]) === normalizedTargetTag) {
+            hasMatchingTag = true;
+            break;
+          }
+        }
+        
+        if (hasMatchingTag) {
+          filteredDocs.push({
+            id: allTagDocs.ids[i],
+            metadata: metadata,
+            document: allTagDocs.documents[i]
+          });
+        }
+      }
+      
+      if (filteredDocs.length > 0) {
+        console.log(`Found ${filteredDocs.length} documents with normalized tag '${normalizedTargetTag}'`);
+        
+        // Show the first result as an example
+        console.log(`Example document: ${filteredDocs[0].id}`);
+        console.log(`Tags: ${filteredDocs[0].metadata.tags_string || "None"}`);
+        
+        familyDocs = filteredDocs.map(doc => doc.id);
+      } else {
+        console.log(`No documents found with normalized tag '${normalizedTargetTag}' using Method 1`);
+      }
+    } catch (err) {
+      console.error("Method 1 error:", err.message);
     }
-  } catch (error) {
-    console.error("Error:", error);
+    
+    // Method 2: Using client-side filtering with tags_string
+    console.log(`\nMethod 2: Using client-side filtering with tags_string field...`);
+    try {
+      // Get all documents with non-empty tags_string
+      const allTaggedDocs = await collection.get({
+        where: { tags_string: { $ne: "" } },
+        include: ["metadatas", "documents"],
+      });
+      
+      // Filter for documents containing the target tag, ignoring "#"
+      const filteredIds = [];
+      
+      allTaggedDocs.ids.forEach((id, i) => {
+        const metadata = allTaggedDocs.metadatas[i];
+        if (metadata.tags_string) {
+          // Split the tags_string into individual tags and normalize them
+          const tags = metadata.tags_string
+            .split('|')
+            .filter(tag => tag.length > 0)
+            .map(normalizeTag);
+          
+          // Check if the normalized target tag is in the list
+          if (tags.includes(normalizedTargetTag)) {
+            filteredIds.push(id);
+          }
+        }
+      });
+      
+      if (filteredIds.length > 0) {
+        console.log(`Found ${filteredIds.length} documents with '${targetTag}' tag using client-side filtering`);
+        
+        // Show the first 5 documents at most
+        const showCount = Math.min(filteredIds.length, 5);
+        for (let i = 0; i < showCount; i++) {
+          const index = allTaggedDocs.ids.indexOf(filteredIds[i]);
+          console.log(`\nDocument ${i+1}: ${filteredIds[i]}`);
+          console.log(`File: ${allTaggedDocs.metadatas[index].fileName || "N/A"}`);
+          console.log(`Tags: ${allTaggedDocs.metadatas[index].tags_string}`);
+          console.log(`Preview: ${allTaggedDocs.metadatas[index].preview || "N/A"}`);
+        }
+      } else {
+        console.log(`No documents found with '${targetTag}' tag using client-side filtering`);
+      }
+    } catch (err) {
+      console.error("Method 2 error:", err.message);
+    }
+    
+    console.log("\nTag search test completed.");
+    
+  } catch (err) {
+    console.error("Error:", err);
   }
 }
 
-testTagSearch().catch(console.error);
+testTagSearch().then(() => console.log("Script completed."));

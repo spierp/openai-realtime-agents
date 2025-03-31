@@ -21,10 +21,11 @@ async function testChromaDB() {
     path: `http://${process.env.CHROMA_SERVER_HOST || '0.0.0.0'}:${process.env.CHROMA_SERVER_PORT || '8000'}` 
   });
 
-  // Define the embedding function with OpenAI using text-embedding-3-small
+  // Define the embedding function with OpenAI using text-embedding-3-large
   const embedder = new OpenAIEmbeddingFunction({
     openai_api_key: process.env.OPENAI_API_KEY,
-    openai_model: "text-embedding-3-small",
+    openai_model: "text-embedding-3-large",
+    openai_dimensions: 3072  // Explicitly set dimensions for large model
   });
 
   try {

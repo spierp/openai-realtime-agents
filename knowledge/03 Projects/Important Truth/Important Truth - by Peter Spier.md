@@ -1,3 +1,10 @@
+---
+creation date: "2025-03-30 10:27"
+tags:
+  - "#family"
+  - "#cool stuff"
+---
+
 # An important truth few people agree with
 
 ### Crypto provides the rails for an internet of value revolution that will reshape the world more dramatically than the original internet itself

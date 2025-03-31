@@ -207,6 +207,8 @@ Key files:
    certbot --nginx -d yourdomain.com
    ```
 
+Your application should now be accessible at https://yourdomain.com without specifying any port, and all traffic will be encrypted with SSL.
+
 ## Setting Up Nginx and SSL on DigitalOcean
 
 ### Configuring Nginx for Port Forwarding
@@ -392,3 +394,160 @@ The deployment script includes an optional backup feature. Set `BACKUP_DIR` and 
 ## License
 
 [MIT License](LICENSE)
+
+## ChromaDB JavaScript Client Array Handling
+
+### Problem: Arrays in ChromaDB JavaScript Client
+
+The ChromaDB JavaScript client has a significant limitation: array fields in document metadata are silently dropped and cannot be used for filtering. This creates a challenge when trying to implement features like tag-based filtering where each document may have multiple tags.
+
+### Solution: Multi-Format Tag Storage
+
+To work around this limitation, we've implemented a robust solution that stores tags in three different formats:
+
+1. **Delimited String Format (`tags_string`)**
+   ```javascript
+   // Store tags as a delimited string with markers
+   metadata.tags_string = `|${tags.join('|')}|`;  // e.g., "|tag1|tag2|tag3|"
+   ```
+   This format allows for substring matching to find documents containing a specific tag.
+
+2. **Numbered Fields**
+   ```javascript
+   // Store each tag in a numbered field
+   tags.forEach((tag, index) => {
+     metadata[`tag_${index}`] = tag;  // Creates tag_0, tag_1, tag_2, etc.
+   });
+   ```
+   This enables direct equality queries for tags at specific positions.
+
+3. **JSON String (`tags_json`)**
+   ```javascript
+   // Store the original array as a JSON string
+   metadata.tags_json = JSON.stringify(tags);  // e.g., '["tag1","tag2","tag3"]'
+   ```
+   This preserves the original array structure for client-side processing.
+
+### Usage in Search Functions
+
+#### Method 1: Direct Field Equality Search
+
+To search for documents where a specific tag is the first tag:
+
+```javascript
+// Find documents where the first tag is "family"
+const results = await collection.get({
+  where: { tag_0: "family" },
+  include: ["metadatas", "documents"]
+});
+```
+
+#### Method 2: Substring Matching with Client-Side Filtering
+
+To search for documents containing a specific tag in any position:
+
+```javascript
+// Get all documents with non-empty tags_string
+const allTaggedDocs = await collection.get({
+  where: { tags_string: { $ne: "" } },
+  include: ["metadatas", "documents"]
+});
+
+// Filter client-side for documents containing the target tag
+const filteredDocs = allTaggedDocs.ids.filter((id, i) => {
+  const metadata = allTaggedDocs.metadatas[i];
+  return metadata.tags_string && metadata.tags_string.includes("|target_tag|");
+});
+```
+
+#### Method 3: JSON Parsing with Client-Side Filtering
+
+For more complex filtering operations:
+
+```javascript
+// Get all documents
+const allDocs = await collection.get({
+  include: ["metadatas", "documents"]
+});
+
+// Filter using the JSON string representation of tags
+const filteredDocs = allDocs.ids.filter((id, i) => {
+  const metadata = allDocs.metadatas[i];
+  if (!metadata.tags_json) return false;
+  
+  try {
+    const tags = JSON.parse(metadata.tags_json);
+    // Perform complex filtering operations
+    return Array.isArray(tags) && (
+      tags.includes("target_tag") || 
+      tags.some(tag => tag.startsWith("prefix-"))
+    );
+  } catch (e) {
+    return false;
+  }
+});
+```
+
+### Implementation in Document Processing
+
+When processing documents, we implement the three-format approach:
+
+```javascript
+if (tags.length > 0) {
+  // 1. String format with delimiters
+  metadata.tags_string = `|${tags.join('|')}|`;
+  
+  // 2. Individual numbered fields for direct querying
+  tags.forEach((tag, index) => {
+    metadata[`tag_${index}`] = tag;
+  });
+  
+  // 3. Keep the original array as a JSON string
+  metadata.tags_json = JSON.stringify(tags);
+}
+```
+
+This approach ensures that tag-based filtering works reliably despite the limitations of the ChromaDB JavaScript client.
+
+## ChromaDB Maintenance
+
+### Cleaning Up ChromaDB Files
+
+When using ChromaDB, the standard `delete-collection.js` script only removes the collection from ChromaDB's registry but leaves the actual files on disk. Over time, this can lead to accumulated directories in the `chroma-db` folder.
+
+To properly clean up both the collections and their associated files, we've created two utility scripts:
+
+#### Interactive Cleanup
+
+The `cleanup-chroma.js` script provides an interactive way to delete collections and clean up files:
+
+```bash
+node cleanup-chroma.js
+```
+
+This script will:
+1. List all ChromaDB collections
+2. Show all subdirectories in the chroma-db folder
+3. Ask for confirmation before deletion
+4. Delete both the collections and their associated files
+5. Optionally delete the SQLite database file
+
+#### Non-Interactive Cleanup
+
+For use in automated scripts, the `cleanup-chroma-force.js` script performs cleanup without asking for confirmation:
+
+```bash
+node cleanup-chroma-force.js
+```
+
+This script will:
+1. Delete all ChromaDB collections
+2. Remove all collection subdirectories in the chroma-db folder
+3. Preserve the SQLite database file by default
+
+### When to Run Cleanup
+
+Consider running these cleanup scripts in the following scenarios:
+- Before creating a new knowledge base to ensure a clean start
+- When you notice disk space being consumed by unused ChromaDB files
+- As part of regular maintenance to keep your environment tidy
